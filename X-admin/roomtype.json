@@ -1,0 +1,39 @@
+{
+    "code": 0,
+    "msg": "",
+    "count": 3000000,
+    "data": [
+        {
+            "id": 1,
+            "price": 1.1,
+            "numOfPerson": 1,
+            "numOfBed": 1,
+            "totalQuantity": 1,
+            "airConditioner": "airConditioner",
+            "lengthOfBed": 1.1,
+            "widthOfBed": 1.1,
+            "remainingQuantity": 1,
+            "roomService": "roomService",
+            "internet": "internet",
+            "hasBreakfast": "hasBreakfast",
+            "hasReserve": "hasReserve",
+            "hasDiscount": "hasDiscount"
+        },
+        {
+            "id": 2,
+            "price": 2.2,
+            "numOfPerson": 2,
+            "numOfBed": 2,
+            "totalQuantity": 2,
+            "airConditioner": "airConditioner2",
+            "lengthOfBed": 2.2,
+            "widthOfBed": 2.2,
+            "remainingQuantity": 2,
+            "roomService": "roomService2",
+            "internet": "internet2",
+            "hasBreakfast": "hasBreakfast2",
+            "hasReserve": "hasReserve2",
+            "hasDiscount": "hasDiscount2"
+        }
+    ]
+}
