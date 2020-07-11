@@ -21,7 +21,7 @@
 
                 <div class="layui-col-sm12 layui-col-md6">
                     <div class="layui-card">
-                        <div class="layui-card-header">最新一周新增用户</div>
+                        <div class="layui-card-header">最近一周商品销量TOP3</div>
                         <div class="layui-card-body" style="min-height: 280px;">
                             <div id="main1" class="layui-col-sm12" style="height: 300px;"></div>
 
@@ -39,7 +39,7 @@
                 </div>
                 <div class="layui-col-sm12 layui-col-md6">
                     <div class="layui-card">
-                        <div class="layui-card-header">用户来源</div>
+                        <div class="layui-card-header">最近一周商品销量占比</div>
                         <div class="layui-card-body" style="min-height: 280px;">
                             <div id="main3" class="layui-col-sm12" style="height: 300px;"></div>
 
@@ -66,6 +66,7 @@
 
         // 指定图表的配置项和数据
         var option = {
+            color: ['#dd6b66'],
             grid: {
                 top: '5%',
                 right: '1%',
@@ -74,20 +75,26 @@
                 containLabel: true
             },
             tooltip: {
-                trigger: 'axis'
+                trigger: 'axis',
+                axisPointer: {
+                type: 'shadow'
+        }
             },
             xAxis: {
                 type: 'category',
-                data: ['周一','周二','周三','周四','周五','周六','周日']
+                data: ['薯片','可乐','口香糖'],
+                axisTick: {
+                alignWithLabel: true
+            }
             },
             yAxis: {
                 type: 'value'
             },
             series: [{
-                name:'用户量',
-                data: [820, 932, 901, 934, 1290, 1330, 1320],
-                type: 'line',
-                smooth: true
+                name:'销量',
+                data: [1290, 932, 890],
+                type: 'bar',
+                barWidth: '50%'
             }]
         };
 
@@ -164,20 +171,22 @@
             legend: {
                 orient: 'vertical',
                 left: 'left',
-                data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+                data: ['薯片','可乐','果汁','烟','酒','口香糖']
             },
             series : [
                 {
-                    name: '访问来源',
+                    name: '销量占比',
                     type: 'pie',
                     radius : '55%',
                     center: ['50%', '60%'],
+                    roseType: 'radius',
                     data:[
-                        {value:335, name:'直接访问'},
-                        {value:310, name:'邮件营销'},
-                        {value:234, name:'联盟广告'},
-                        {value:135, name:'视频广告'},
-                        {value:1548, name:'搜索引擎'}
+                        {value:335, name:'薯片'},
+                        {value:310, name:'酒'},
+                        {value:234, name:'果汁'},
+                        {value:135, name:'烟'},
+                        {value:548, name:'可乐'},
+                        {value:279, name:'口香糖'}
                     ],
                     itemStyle: {
                         emphasis: {
