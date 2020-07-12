@@ -70,11 +70,26 @@
             </table>
           </div>
 
+          <!--状态栏-->
+          <script type="text/html" id="status_bar">
+            {{#  if(d.status == 'Y'){ }}
+            <span class="layui-btn layui-btn-normal layui-btn-mini">可预订</span>
+            {{#  } else if(d.status == 'N') { }}
+            <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled">不可订</span>
+            {{#  } }}
+        </script>
+
           <!--行操作-->
           <script type="text/html" id="bar_list">
-            <a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">
+            {{#  if(d.status == 'Y'){ }}
+            <a onclick="member_stop(this,'10001')" href="javascript:;"  title="禁用">
               <i class="layui-icon">&#xe601;</i>
             </a>
+            {{#  } else if(d.status == 'N') { }}
+            <a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用"">
+              <i class="layui-icon">&#xe62f;</i>
+            </a>
+            {{#  } }}
             <a title="编辑" lay-event="edit"  href="javascript:;">
               <i class="layui-icon">&#xe642;</i>
             </a>
@@ -113,8 +128,9 @@
           { checkbox: true, fixed: true, align: 'center' }
           , { field: 'id', title: 'ID', fixed: 'left', width: 130, sort: true }
           , { field: 'floor', title: '楼层', unresize: true, width: 120, sort: true }
-          , { field: 'd.roomType.id', title: '类型ID', unresize: true, width: 130, templet: '#imgShow' }
-          , { field: 'status', title: '状态', unresize: true, width: 90, sort: true }
+          , { field: 'd.roomType.id', title: '类型ID', unresize: true, width: 130}
+          , { field: 'status', title: '状态', unresize: true, width: 9, align:'center',
+              templet:'status_bar'}
           , { fixed: 'right', title: '操作', toolbar: '#bar_list', width: 120, align: 'center' }
         ]
       ],
