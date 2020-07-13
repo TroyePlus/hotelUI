@@ -33,7 +33,7 @@
       <div class="layui-col-md12">
         <div class="layui-card">
           <div class="layui-card-body ">
-            <form class="layui-form layui-col-space5">
+            <form class="layui-form layui-col-space5" id="form">
               <div class="layui-inline layui-show-xs-block">
                 <div id="demo" style="width: 300px;"></div>
               </div>
@@ -41,7 +41,8 @@
 
               </div>
               <div class="layui-inline layui-show-xs-block">
-                <input type="text" name="id" placeholder="请输入购买单号" autocomplete="off" class="layui-input">
+                <input type="text" name="id" placeholder="请输入购买单号" autocomplete="off" class="layui-input"
+                  style="height: 36px;">
               </div>
               <div class="layui-inline layui-show-xs-block">
                 <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
@@ -81,15 +82,28 @@
   //   form.render('select');  //渲染选择框
   // });
   var demo = xmSelect.render({
-		el: '#demo',
+    el: '#demo',
+    theme: {
+      color: '#1cbbb4',
+    },
     tips: '选择商品',
-		data: [
-			{name: '水果', value: 1},
-			{name: '薯片', value: 2},
-			{name: '饮料', value: 3},
-			{name: '烟酒', value: 4},
-		],
-   })
+    data: [
+      { name: '水果', value: 1 },
+      { name: '薯片', value: 2 },
+      { name: '饮料', value: 3 },
+      { name: '烟酒', value: 4 },
+    ],
+  })
+
+  layui.use('form',function(){
+    var form = layui.form;
+    
+    form.on('submit(search)',function(){
+      var selectArr = demo2.getValue('value');
+      console.log(selectArr);
+      //异步请求搜索
+    })
+  });
 
   layui.use('table', function () {
     var table = layui.table;
@@ -107,10 +121,17 @@
       , cols: [
         [
           { checkbox: true, fixed: true, align: 'center' }
-          , { field: 'id', title: 'ID', fixed: 'left', width: 130, sort: true }
-          , { field: 'floor', title: '楼层', unresize: true, width: 120, sort: true }
-          , { field: 'd.roomType.id', title: '类型ID', unresize: true, width: 130, templet: '#imgShow' }
-          , { field: 'status', title: '状态', unresize: true, width: 90, sort: true }
+          , {
+            field: 'd.tenant.id', title: '客人ID', unresize: true, width: 130,
+            templet: '<div>{{d.product.name}}</div>'
+          }
+          , {
+            field: 'd.tenant.name', title: '客人姓名', unresize: true, width: 130,
+            templet: '<div>{{d.product.name}}</div>'
+          }
+          , { field: 'commodityId', title: '商品编号', unresize: true, width: 120, sort: true }
+          , { field: 'date', title: '日期', unresize: true, width: 130, sort: true }
+          , { field: 'price', title: '实付金额', unresize: true, width: 90, sort: true }
           , { fixed: 'right', title: '操作', toolbar: '#bar_list', width: 120, align: 'center' }
         ]
       ],
@@ -131,8 +152,14 @@
       }
     });
 
-    function table_reload() {
-
+    function table_reload(input) {
+      table.reload('com_table',{
+        url: '/consums',
+        method: 'get',
+        where: {
+          id: input
+        }
+      });
     }
 
     //处理操作

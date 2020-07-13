@@ -25,11 +25,11 @@
         <div class="layui-row">
             <form class="layui-form" id="form">
                 <div class="layui-form-item">
-                    <label for="id" class="layui-form-label">
-                        <span class="x-red">*</span>客房号
+                    <label class="layui-form-label">
+                        客房号
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="id" name="id" required="" lay-verify="required" autocomplete="off"
+                        <input type="text" id="roomId" name="roomId" required="" lay-verify="required" autocomplete="off"
                             class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">
@@ -37,33 +37,38 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label for="floor" class="layui-form-label">
-                        <span class="x-red">*</span>楼层
+                    <label class="layui-form-label">
+                        楼层
                     </label>
                     <div class="layui-input-inline">
                         <select name="floor" id="floor" lay-verify="required">
                             <option value="">请选择</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
                         </select>
                     </div>
                     <div class="layui-form-mid layui-word-aux">
-                        <span class="x-red">*</span>客房所在楼层
+                        客房所在楼层
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label for="typeId" class="layui-form-label">
-                        <span class="x-red">*</span>类型
+                    <label class="layui-form-label">
+                        类型
                     </label>
                     <div class="layui-input-inline">
-                        <select name="roomType.id" id="typeId" lay-verify="required">
+                        <select name="typeId" id="typeId" lay-verify="required">
                             <option value="">请选择</option>
                         </select>
                     </div>
                     <div class="layui-form-mid layui-word-aux">
-                        <span class="x-red">*</span>客房类型
+                        客房类型
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label"><span class="x-red">*</span>状态</label>
+                    <label class="layui-form-label">状态</label>
                     <div class="layui-input-block">
                         <input type="radio" name="status" value="Y" title="可预订">
                         <input type="radio" name="status" value="N" title="不可订">
@@ -115,10 +120,11 @@
                                 data: data.field,
                                 dataType: "json",
                                 success: function (result) {
-                                    if (result.status == 200) {
-                                        layer.msg('保存成功!', { icon: 6, time: 1000 });
+                                    if (result.code == 200) {
+                                        parent.layui.table.reload('room_table',{page:{curr:$(".layui-laypage-em").next().html()}});
                                         xadmin.close();
-                                        xadmin.father_reload();
+                                        parent.layer.msg('保存成功!', { icon: 6, time: 1000 });
+                                        // xadmin.father_reload();
                                     }
                                     else {
                                         layer.msg('保存失败，请稍后再试!', { icon: 5, time: 1000 });
