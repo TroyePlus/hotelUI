@@ -233,7 +233,7 @@
     function member_edit(data) {
       layer.open({
         type: 2,
-        area: ['700px', '500px'],
+        area: ['600px', '500px'],
         fix: false, //不固定
         maxmin: true,
         shade: 0.8,
@@ -253,7 +253,7 @@
     function member_add() {
       layer.open({
         type: 2,
-        area: ['600px', '400px'],
+        area: ['600px', '500px'],
         fix: false, //不固定
         maxmin: true,
         shade: 0.8,
@@ -275,7 +275,7 @@
           async: true,
           url: "/room",
           data: {
-            "id": obj.data.id,
+            "id": obj.data.roomId,
           },
           dataType: "json",
           success: function (result) {

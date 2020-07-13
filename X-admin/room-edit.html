@@ -105,19 +105,17 @@
                     $("input[name='status'][value='" + data.status + "']").attr("checked", true);
                     form.render('radio')
 
-                    $('#id').val(data.id);
-
-                    var url = '/rooms/' + data.id;
+                    $('#id').val(data.roomId);
 
                     //监听提交
                     form.on('submit(save)',
                         function (data) {
-                            console.log(data);
+                            var putData = data.field;
                             $.ajax({
                                 type: "put",
                                 async: true,
-                                url: url,
-                                data: data.field,
+                                url: "/room",
+                                data: putData,
                                 dataType: "json",
                                 success: function (result) {
                                     if (result.code == 200) {

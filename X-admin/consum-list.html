@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>客房列表</title>
+  <title>消费列表</title>
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport"
@@ -18,10 +18,10 @@
 <body>
   <div class="x-nav">
     <span class="layui-breadcrumb">
-      <a href="">首页</a>
-      <a href="">演示</a>
+      <a href="#“>首页</a>
+      <a href="#">消费管理</a>
       <a>
-        <cite>导航元素</cite></a>
+        <cite>消费列表</cite></a>
     </span>
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
       onclick="location.reload()" title="刷新">
@@ -32,25 +32,31 @@
     <div class="layui-row layui-col-space15">
       <div class="layui-col-md12">
         <div class="layui-card">
-          <div class="layui-card-body ">
-            <form class="layui-form layui-col-space5" id="form">
-              <div class="layui-inline layui-show-xs-block">
-                <div id="demo" style="width: 300px;"></div>
-              </div>
-              <div class="layui-inline layui-show-xs-block">
+          <div class="layui-card-body">
+            <form class="layui-form" id="form">
+              <div class="layui-form-item layui-col-space5">
+                <label class="layui-form-label" style="width: 50px;">房客ID</label>
+                <div class="layui-input-inline layui-show-xs-block" style="width: 150px;">
+                  <input type="text" name="tenant.id" placeholder="请输入房客编号" autocomplete="off" class="layui-input">
+                </div>
 
-              </div>
-              <div class="layui-inline layui-show-xs-block">
-                <input type="text" name="id" placeholder="请输入购买单号" autocomplete="off" class="layui-input"
-                  style="height: 36px;">
-              </div>
-              <div class="layui-inline layui-show-xs-block">
-                <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+                <label class="layui-form-label" style="width: 50px;">商品ID</label>
+                <div class="layui-input-inline layui-show-xs-block" style="width: 150px;">
+                  <input type="text" name="commodity.id" placeholder="请输入商品编号" autocomplete="off" class="layui-input">
+                </div>
+                <label class="layui-form-label" style="width: 50px;">单号</label>
+                <div class="layui-input-inline layui-show-xs-block" style="width: 150px;">
+                  <input type="text" name="consumptionId" placeholder="请输入购买单号" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                  <button class="layui-btn" lay-submit="" lay-filter="search"><i
+                      class="layui-icon">&#xe615;</i></button>
+                </div>
               </div>
             </form>
           </div>
           <div class="layui-card-header">
-            <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+            <button class="layui-btn layui-btn-danger" id="btn_delete"><i class="layui-icon"></i>批量删除</button>
             <button class="layui-btn" id="btn_add"><i class="layui-icon"></i>添加</button>
           </div>
           <div class="layui-card-body ">
@@ -60,9 +66,6 @@
 
           <!--行操作-->
           <script type="text/html" id="bar_list">
-            <a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">
-              <i class="layui-icon">&#xe601;</i>
-            </a>
             <a title="编辑" lay-event="edit"  href="javascript:;">
               <i class="layui-icon">&#xe642;</i>
             </a>
@@ -76,37 +79,25 @@
   </div>
 </body>
 <script>
-  // layui.use('form', function () {
-  //   var laydate = layui.laydate;
-  //   var form = layui.form;
-  //   form.render('select');  //渲染选择框
-  // });
-  var demo = xmSelect.render({
-    el: '#demo',
-    theme: {
-      color: '#1cbbb4',
-    },
-    tips: '选择商品',
-    data: [
-      { name: '水果', value: 1 },
-      { name: '薯片', value: 2 },
-      { name: '饮料', value: 3 },
-      { name: '烟酒', value: 4 },
-    ],
-  })
+  // var demo = xmSelect.render({
+  //   el: '#demo',
+  //   theme: {
+  //     color: '#1cbbb4',
+  //   },
+  //   tips: '选择商品',
+  //   data: [
+  //     { name: '水果', value: 1 },
+  //     { name: '薯片', value: 2 },
+  //     { name: '饮料', value: 3 },
+  //     { name: '烟酒', value: 4 },
+  //   ],
+  // })
 
-  layui.use('form',function(){
-    var form = layui.form;
-    
-    form.on('submit(search)',function(){
-      var selectArr = demo2.getValue('value');
-      console.log(selectArr);
-      //异步请求搜索
-    })
-  });
+  layui.use(['table','form'], function () {
+    $ = layui.jquery;
+    var table = layui.table,
+    form = layui.form;
 
-  layui.use('table', function () {
-    var table = layui.table;
     table.render({
       elem: '#table'
       , url: '/cosums' //数据接口
@@ -121,17 +112,19 @@
       , cols: [
         [
           { checkbox: true, fixed: true, align: 'center' }
+          , { field: 'consumptionId', title: '消费单号', unresize: true, width: 120, sort: true }
           , {
             field: 'd.tenant.id', title: '客人ID', unresize: true, width: 130,
-            templet: '<div>{{d.product.name}}</div>'
+            templet: '<div>{{d.tenant.id}}</div>'
           }
           , {
             field: 'd.tenant.name', title: '客人姓名', unresize: true, width: 130,
             templet: '<div>{{d.product.name}}</div>'
           }
           , { field: 'commodityId', title: '商品编号', unresize: true, width: 120, sort: true }
-          , { field: 'date', title: '日期', unresize: true, width: 130, sort: true }
-          , { field: 'price', title: '实付金额', unresize: true, width: 90, sort: true }
+          , { field: 'quantity', title: '数量', unresize: true, width: 80}
+          , { field: 'price', title: '金额', unresize: true, width: 90, sort: true }
+          , { field: 'date', title: '日期', unresize: true, width: 130}
           , { fixed: 'right', title: '操作', toolbar: '#bar_list', width: 120, align: 'center' }
         ]
       ],
@@ -152,12 +145,22 @@
       }
     });
 
-    function table_reload(input) {
-      table.reload('com_table',{
+    form.on('submit(search)', function (data) {
+      //异步请求搜索
+      layer.msg(data.field);
+      // table_reload($())
+      return false;
+    })
+
+    //根据输入进行多条件模糊搜索,重新渲染表格
+    function table_reload(tId,comId,conId) {
+      table.reload('com_table', {
         url: '/consums',
         method: 'get',
         where: {
-          id: input
+          "tId": tId,
+          "comId": comId,
+          "conId": conId
         }
       });
     }
@@ -174,35 +177,11 @@
       }
     });
 
-    /*客房-停用*/
-    function member_stop(obj, id) {
-      layer.confirm('确认要停用吗？', function (index) {
-
-        if ($(obj).attr('title') == '启用') {
-
-          //发异步把用户状态进行更改
-          $(obj).attr('title', '停用')
-          $(obj).find('i').html('&#xe62f;');
-
-          $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-          layer.msg('已停用!', { icon: 5, time: 1000 });
-
-        } else {
-          $(obj).attr('title', '启用')
-          $(obj).find('i').html('&#xe601;');
-
-          $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-          layer.msg('已启用!', { icon: 5, time: 1000 });
-        }
-
-      });
-    }
-
-    /*客房-编辑*/
+    /*消费-编辑*/
     function member_edit(data) {
       layer.open({
         type: 2,
-        area: ['700px', '500px'],
+        area: ['600px', '500px'],
         fix: false, //不固定
         maxmin: true,
         shade: 0.8,
@@ -211,11 +190,6 @@
         success: function (layero, index) {
           var iframeWin = window[layero.find('iframe')[0]['name']];
           iframeWin.init(data);
-        },
-        end: function () {
-          if (isSave == 1) {         //如果修改保存成功重新渲染数据表格
-            search_reload_input();
-          }
         }
       });
     }
@@ -224,10 +198,11 @@
       member_add();
     });
 
+    /*消费-新增*/
     function member_add() {
       layer.open({
         type: 2,
-        area: ['600px', '400px'],
+        area: ['600px', '500px'],
         fix: false, //不固定
         maxmin: true,
         shade: 0.8,
@@ -240,20 +215,20 @@
       });
     }
 
-    /*客房-删除*/
+    /*消费-删除*/
     function member_del(obj) {
       layer.confirm('确认要删除吗？', function (index) {
         //发异步删除数据
         $.ajax({
           type: "delete",
           async: true,
-          url: "/rooms/" + obj.data.roomId,
+          url: "/consums/" + obj.data.roomId,
           dataType: "json",
           success: function (result) {
             if (result.status == 200) {
-              obj.del();
-              //$(obj).parents("tr").remove();
+              // obj.del();
               layer.msg('已删除!', { icon: 1, time: 1000 });
+              $(".layui-laypage-btn").click();  //模拟点击,刷新当前页
             }
             else {
               layer.msg('删除失败,请稍后再试!', { icon: 2, time: 1000 });
@@ -266,6 +241,10 @@
       });
     }
 
+    $('#btn_delete').on('click',function(){
+        delAll();
+      });
+      
     //批量删除
     function delAll(argument) {
       var data = tableCheck.getData();
