@@ -32,7 +32,7 @@
                     <div class="layui-card">
                         <div class="layui-card-header">最近一周商品销量TOP3</div>
                         <div class="layui-card-body" style="min-height: 280px;">
-                            <div id="main1" class="layui-col-sm12" style="width:600px;height: 300px;"></div>
+                            <div id="main1" class="layui-col-sm12" style="height: 300px;"></div>
                         </div>
                     </div>
 
@@ -114,46 +114,44 @@
                 type: 'shadow'
                 }
             }
-            ,
-            xAxis: {
-                type: 'category',
-                data: ['薯片','可乐','口香糖'],
-                axisTick: {
-                alignWithLabel: true
-            }
-            },
-            yAxis: {
-                type: 'value'
-            },
-            series: [{
-                name:'销量',
-                data: [1290, 932, 890],
-                type: 'bar',
-                barWidth: '50%'
-            }]
         };
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
 
-        // myChart.showLoading();
+        myChart.showLoading();
 
-        // $.get('/api/',function (result) {
-        //     var names = [];  //类别数组
-        //     var labels = [];
-        //     if(result){
-        //         myChart.hideLoading();
-        //         $.each(data, function (index, item) {
-        //                     names.push(item.label); //逐个取出类别并填入类别数组
-        //                     values.push({
-        //                         name: item.label,
-        //                         value: item.count
-        //                     });
-        //             });
-        //     }
-        // }).fail(function (errorMsg) {
-        //     myChart.hideLoading();
-        // });
+        $.get('/api/consumption/week',function (result) {
+            var names = [];  //类别数组
+            var values = [];
+            if(result){
+                $.each(result.data, function (index, item) {
+                            names.push(item.commodityName); //逐个取出类别并填入类别数组
+                            values.push(item.salesVolume);
+                    });
+                    myChart.hideLoading();
+                    myChart.setOption({
+                        xAxis: {
+                        type: 'category',
+                        data: names,
+                        axisTick: {
+                            alignWithLabel: true
+                        }
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        name:'销量',
+                        data: values,
+                        type: 'bar',
+                        barWidth: '50%'
+                        }]
+                    });
+                }
+        }).fail(function (errorMsg) {
+            myChart.hideLoading();
+        });
 
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main3'));
@@ -171,11 +169,10 @@
 
         myChart.showLoading();
 
-        $.get('/api/consumption/week',function (result) {
+        $.get('/api/consumption/month',function (result) {
             var names = [];  //类别数组
             var labels = [];
             if(result){
-                myChart.hideLoading();
                 $.each(result.data, function (index, item) {
                             names.push(item.commodityName); //逐个取出类别并填入类别数组
                             labels.push({

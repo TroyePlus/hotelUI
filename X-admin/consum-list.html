@@ -119,6 +119,7 @@
         [
           { checkbox: true, fixed: true, align: 'center' }
           , { field: 'consumptionId', title: '消费单号', unresize: true, width: 120, sort: true }
+          , { field: 'stayId', title: '入住单号', unresize: true, width: 120, sort: true }
           , {
             field: 'd.tenant.id', title: '房客ID', unresize: true, width: 130,
             templet: '<div>{{d.tenant.id}}</div>'
@@ -232,31 +233,9 @@
 
     /*消费-删除*/
     function member_del(obj) {
-      layer.confirm('确认要删除吗？', function (index) {
-        //发异步删除数据
-        $.ajax({
-          type: "delete",
-          async: true,
-          url: "/api/consumption",
-          data: {
-            "consumptionId": obj.data.consumptionId
-          },
-          dataType: "json",
-          success: function (result) {
-            if (result.code == 200) {
-              // obj.del();
-              layer.msg('已删除!', { icon: 1, time: 1000 });
-              $(".layui-laypage-btn").click();  //模拟点击,刷新当前页
-            }
-            else {
-              layer.msg('删除失败,请稍后再试!', { icon: 2, time: 1000 });
-            }
-          },
-          error: function (errorMsg) {
-            layer.msg('请求失败，请稍后再试!', { icon: 2, time: 1000 });
-          }
-        });
-      });
+      var ids = [];
+      ids.push(obj.data.consumptionId);
+      del(ids);
     }
 
     $('#btn_delete').on('click', function () {
@@ -274,14 +253,18 @@
       $.each(checkStatus.data, function (index, consum) {
         ids.push(consum.consumptionId);
       });
-      layer.confirm('确认要删除吗？' + ids, function (index) {
+      del(ids);
+    }
+
+    function del(data) {
+      layer.confirm('确认要删除吗？' + data, function (index) {
         //捉到所有被选中的，发异步进行删除
         $.ajax({
           type: "delete",
           async: true,
           url: "/api/consumption",
           data: {
-            "consumptionIds": ids
+            "consumptionIds": data
           },
           dataType: "json",
           success: function (result) {
