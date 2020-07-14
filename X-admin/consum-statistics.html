@@ -96,7 +96,7 @@
         <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
         <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('main1'));
+        var myChart1 = echarts.init(document.getElementById('main1'));
 
         // 指定图表的配置项和数据
         var option = {
@@ -117,9 +117,9 @@
         };
 
         // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
+        myChart1.setOption(option);
 
-        myChart.showLoading();
+        myChart1.showLoading();
 
         $.get('/api/consumption/week',function (result) {
             var names = [];  //类别数组
@@ -129,8 +129,8 @@
                             names.push(item.commodityName); //逐个取出类别并填入类别数组
                             values.push(item.salesVolume);
                     });
-                    myChart.hideLoading();
-                    myChart.setOption({
+                    myChart1.hideLoading();
+                    myChart1.setOption({
                         xAxis: {
                         type: 'category',
                         data: names,
@@ -150,11 +150,11 @@
                     });
                 }
         }).fail(function (errorMsg) {
-            myChart.hideLoading();
+            myChart1.hideLoading();
         });
 
         // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('main3'));
+        var myChart2 = echarts.init(document.getElementById('main3'));
 
         // 指定图表的配置项和数据
         var option = {
@@ -165,9 +165,9 @@
         };
 
         // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
+        myChart2.setOption(option);
 
-        myChart.showLoading();
+        myChart2.showLoading();
 
         $.get('/api/consumption/month',function (result) {
             var names = [];  //类别数组
@@ -180,8 +180,8 @@
                                 value: item.salesVolume
                             });
                     });
-                    myChart.hideLoading();
-                    myChart.setOption({
+                    myChart2.hideLoading();
+                    myChart2.setOption({
                         legend: {
                         orient: 'vertical',
                         left: 'left',
@@ -207,7 +207,7 @@
                     });
             }
         }).fail(function (errorMsg) {
-            myChart.hideLoading();
+            myChart2.hideLoading();
         });
 
 
