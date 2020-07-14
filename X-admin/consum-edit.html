@@ -3,11 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>编辑消费单</title>
+    <title>添加消费单</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
-          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
     <link rel="stylesheet" href="./css/font.css">
     <link rel="stylesheet" href="./css/xadmin.css">
     <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
@@ -22,130 +22,173 @@
 </head>
 
 <body>
-<div class="layui-fluid">
-    <div class="layui-row">
-        <form class="layui-form" id="form">
-            <div class="layui-form-item">
-                <label for="id" class="layui-form-label">
-                    房客ID
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="tId" name="tenant.id" required="" lay-verify="required" autocomplete="off"
-                           class="layui-input">
-                </div>
-                <div class="layui-form-mid layui-word-aux">
-                    <span class="x-red">*</span>房客的唯一ID
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label for="comId" class="layui-form-label">
-                    商品ID
-                </label>
-                <div class="layui-input-inline">
-                    <select name="commodity.CommodityId" id="comId" lay-verify="required">
-                      <option value="">请选择</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                    </select>
-                </div>
-                <div class="layui-form-mid layui-word-aux">
-                    商品的唯一ID
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">日期</label>
-                <div class="layui-input-inline" style="width: 200px;">
-                    <input type="text" name="date" id="date" class="layui-input" lay-verify="required">
-                </div>
-                <div class="layui-form-mid layui-word-aux">购买日期</div>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">数量</label>
-                    <div class="layui-input-inline" style="width: 90px;">
-                        <input type="number" name="quantity" id="quantity" autocomplete="off"
-                               lay-verify="required" class="layui-input" step="1" min="1" max="10000">
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form class="layui-form" id="form">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        消费单号
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="conId" name="consumptionId" required="" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        房客消费的唯一ID
                     </div>
                 </div>
-        
-                <div class="layui-inline">
-                    <label class="layui-form-label">金额</label>
-                    <div class="layui-input-inline" style="width: 90px;">
-                        <input type="number" name="price" id="price" placeholder="预估金额" autocomplete="off"
-                               class="layui-input" step="0.01" min="0" max="10000">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        房客ID
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="tId" name="tenantId" required="" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        房客的唯一ID
                     </div>
                 </div>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="edit">添加</button>
-                    <button type="button" class="layui-btn layui-btn-primary" id="cancel">取消</button>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        入住单号
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="stayId" name="stayId" required="" lay-verify="required"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        房客入住的唯一ID
+                    </div>
                 </div>
-            </div>
-        </form>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        商品ID
+                    </label>
+                    <div class="layui-input-inline">
+                        <div id="select"></div>
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        商品的唯一ID
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">日期</label>
+                    <div class="layui-input-inline" style="width: 200px;">
+                        <input type="text" name="date" id="date" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">购买日期</div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">数量</label>
+                        <div class="layui-input-inline" style="width: 90px;">
+                            <input type="number" name="quantity" id="quantity" autocomplete="off" lay-verify="required"
+                                class="layui-input" step="1" min="1" max="10000">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="save">保存</button>
+                        <button type="button" class="layui-btn layui-btn-primary" id="cancel">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-<script>
-    layui.use('laydate',function(){
-            var laydate = layui.laydate;
-            
-            laydate.render({
-            elem: '#date' //指定元素
-            });
+    <script>
+        // layui.use('laydate', function () {
+        //     var laydate = layui.laydate;
+
+        //     laydate.render({
+        //         elem: '#date', //指定元素
+        //         trigger: 'click'
+        //     });
+        // });
+
+        var demo1 = xmSelect.render({
+            el: '#select',
+            name: 'commodityId',
+            radio: true,
+            clickClose: true,
+            layVerify: 'required',
+            theme: {
+                color: '#1cbbb4',
+            },
+            tips: '选择商品类型',
+            prop: {
+                name: 'commodityName',
+                value: 'commodityId'
+            },
+            data: []
         });
 
-    function init(data) {
-        $.get('/types/idList', function (result) {
-            $.each(result, function (index, id) {
-                $('#typeId').append(new Option(id, id));
-            });
+        $.get('/api/commodities', function (result) {
+            demo1.update({
+            data : result.data
+        });
         });
 
-        layui.use(['form', 'layer'],
-            function () {
-                $ = layui.jquery;
-                var form = layui.form,
-                    layer = layui.layer;
-                form.render('select');
+        function init(data) {
+            layui.use(['form', 'layer','laydate'],
+                function () {
+                    var form = layui.form,
+                        layer = layui.layer,
+                        laydate = layui.laydate;
 
-                // $('#tId').val(data.tenant.id);
-                // $('#date').val(data.date);
-
-                //监听提交
-                form.on('submit(add)',
-                    function (data) {
-                        console.log(data);
-                        //发异步，把数据提交给php
-                        $.post('/rooms', data.feld, function (result) {
-                            if (result.status == 200) {
-                                layer.msg('添加成功!', { icon: 6, time: 1000 });
-                                //关闭当前frame
-                                xadmin.close();
-
-                                // 可以对父窗口进行刷新
-                                xadmin.father_reload();
-                            }
-                            else {
-                                layer.msg('添加失败，请稍后再试!', { icon: 5, time: 1000 });
-                            }
-                        }, 'json').error(function () {
-                            layer.msg('请求失败，请稍后再试!', { icon: 5, time: 1000 });
-                        });
-
-                        return false;
+                    //设置类型默认值
+                    demo1.update({
+                        initValue: [data.commodity.id]
                     });
 
-                $('#cancel').on('click', function () {
-                    xadmin.close();
-                    // var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-                    // parent.layer.close(index);  //关闭窗口
+                    laydate.render({
+                        elem: '#date',
+                        trigger: 'click',
+                        value: data.date
+                        });
+
+                    $('#conId').val(data.consumptionId);
+                    $('#tId').val(data.tenant.id);
+                    $('#stayId').val(data.stayId);
+                    $('#quantity').val(data.quantity);
+
+                    //监听提交
+                    form.on('submit(save)',
+                        function (data) {
+                            var putData = data.field;
+                            $.ajax({
+                                type: "put",
+                                async: true,
+                                url: "/api/consumption",
+                                data: putData,
+                                dataType: "json",
+                                success: function (result){
+                                    if (result.code == 200) {
+                                    parent.layui.table.reload('com_table', { page: { curr: $(".layui-laypage-em").next().html() } });
+                                    xadmin.close();
+                                    parent.layer.msg('修改成功!', { icon: 6, time: 1000 });
+                                }
+                                else {
+                                    layer.msg('修改失败，请稍后再试!', { icon: 5, time: 1000 });
+                                }
+                                },
+                                error: function (errorMsg) {
+                                    console.log(errorMsg);
+                                    layer.msg('请求失败，请稍后再试!', { icon: 5, time: 1000 });
+                                }
+                            });
+                            return false;
+                        });
+
                 });
+            $('#cancel').on('click', function () {
+                xadmin.close();
+                // var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                // parent.layer.close(index);  //关闭窗口
             });
-    }
-</script>
+        }
+    </script>
 </body>
 
 </html>

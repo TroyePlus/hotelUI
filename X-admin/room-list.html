@@ -301,32 +301,9 @@
 
     /*客房-删除*/
     function member_del(obj) {
-      layer.confirm('确认要删除吗？', function (index) {
-        //发异步删除数据
-        $.ajax({
-          type: "delete",
-          async: true,
-          url: "/api/room",
-          data: {
-            "roomId": obj.data.roomId,
-          },
-          dataType: "json",
-          success: function (result) {
-            if (result.code == 200) {
-              obj.del();
-              //$(obj).parents("tr").remove();
-              layer.msg('已删除!', { icon: 1, time: 1000 });
-              $(".layui-laypage-btn").click();  //模拟点击,刷新当前页
-            }
-            else {
-              layer.msg('删除失败,请稍后再试!', { icon: 2, time: 1000 });
-            }
-          },
-          error: function (errorMsg) {
-            layer.msg('请求失败，请稍后再试!', { icon: 2, time: 1000 });
-          }
-        });
-      });
+      var ids = [];
+      ids.push(obj.data.roomId);
+      del(ids);
     }
 
     $('#btn_delete').on('click',function(){
@@ -342,16 +319,20 @@
       }
       var ids = [];
       $.each(checkStatus.data,function(index,room){
-        ids.push(room.id);
+        ids.push(room.roomId);
       });
-      layer.confirm('确认要删除吗？' + ids, function (index) {
+      del(ids);
+    }
+
+    function del(data) {
+      layer.confirm('确认要删除吗？' + data, function (index) {
         //捉到所有被选中的，发异步进行删除
         $.ajax({
           type: "delete",
           async: true,
-          url: "/api/rooms",
+          url: "/api/room",
           data: {
-            "ids": ids
+            "roomIds": data
           },
           dataType: "json",
           success: function (result) {

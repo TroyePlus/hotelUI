@@ -46,15 +46,17 @@
                 </div>
                 <label class="layui-form-label" style="width: 50px;">日期</label>
                 <div class="layui-input-inline layui-show-xs-block" style="width:150px;">
-                    <input type="text" name="date" id="date" class="layui-input">
+                  <input type="text" name="date" id="date" class="layui-input">
                 </div>
                 <label class="layui-form-label" style="width: 50px;">单号</label>
                 <div class="layui-input-inline layui-show-xs-block" style="width: 150px;">
                   <input type="text" name="conId" placeholder="请输入购买单号" autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-inline layui-show-xs-block">
-                  <button class="layui-btn" lay-submit="" lay-filter="search"><i
-                      class="layui-icon">&#xe615;</i></button>
+                  <button class="layui-btn" lay-submit="" lay-filter="search">
+                    <i class="layui-icon">&#xe615;</i></button>
+                  <button class="layui-btn" type="reset" id="btn_reset">
+                    <i class="layui-icon layui-icon-refresh"></i></button>
                 </div>
               </div>
             </form>
@@ -64,7 +66,7 @@
             <button class="layui-btn" id="btn_add"><i class="layui-icon"></i>添加</button>
           </div>
           <div class="layui-card-body ">
-            <table class="layui-table layui-form" id="table">
+            <table class="layui-table" id="table" lay-filter="handle">
             </table>
           </div>
 
@@ -83,18 +85,24 @@
   </div>
 </body>
 <script>
-  layui.use('laydate',function(){
-            var laydate = layui.laydate;
-            
-            laydate.render({
-            elem: '#date' //指定元素
-            });
-        });
+  // layui.use('laydate', function () {
+  //   var laydate = layui.laydate;
 
-  layui.use(['table','form'], function () {
+  //   laydate.render({
+  //     elem: '#date' //指定元素
+  //   });
+  // });
+
+  layui.use(['laydate','table', 'form'], function () {
+    var laydate = layui.laydate;
+
+    laydate.render({
+      elem: '#date' //指定元素
+    });
+
     $ = layui.jquery;
     var table = layui.table,
-    form = layui.form;
+      form = layui.form;
 
     table.render({
       elem: '#table'
@@ -119,13 +127,17 @@
             field: 'd.tenant.name', title: '房客姓名', unresize: true, width: 130,
             templet: '<div>{{d.tenant.name}}</div>'
           }
-          , { field: 'd.commodity.id', title: '商品编号', unresize: true, width: 120,
-            templet: '<div>{{d.commodity.id}}</div>'}
-          , { field: 'd.commodity.name', title: '商品名称', unresize: true, width: 120,
-            templet: '<div>{{d.commodity.name}}</div>'}
-          , { field: 'quantity', title: '数量', unresize: true, width: 80}
-          , { field: 'price', title: '金额', unresize: true, width: 90}
-          , { field: 'date', title: '日期', unresize: true, width: 130}
+          , {
+            field: 'd.commodity.id', title: '商品编号', unresize: true, width: 120,
+            templet: '<div>{{d.commodity.id}}</div>'
+          }
+          , {
+            field: 'd.commodity.name', title: '商品名称', unresize: true, width: 120,
+            templet: '<div>{{d.commodity.name}}</div>'
+          }
+          , { field: 'quantity', title: '数量', unresize: true, width: 80 }
+          , { field: 'price', title: '金额', unresize: true, width: 90 }
+          , { field: 'date', title: '日期', unresize: true, width: 130 }
           , { fixed: 'right', title: '操作', toolbar: '#bar_list', width: 120, align: 'center' }
         ]
       ],
@@ -162,14 +174,15 @@
         where: {
           "tenantId": obj.tId,
           "commodityId": obj.comId,
-          "consumptionId": obj.conId
+          "consumptionId": obj.conId,
+          "date": obj.date
         }
       });
     }
 
     //处理操作
     table.on('tool(handle)', function (obj) {
-      switch (obj.evernt) {
+      switch (obj.event) {
         case "edit":
           member_edit(obj.data);
           break;
@@ -226,11 +239,11 @@
           async: true,
           url: "/api/consumption",
           data: {
-            "consumptionId": obj.data.roomId
+            "consumptionId": obj.data.consumptionId
           },
           dataType: "json",
           success: function (result) {
-            if (result.status == 200) {
+            if (result.code == 200) {
               // obj.del();
               layer.msg('已删除!', { icon: 1, time: 1000 });
               $(".layui-laypage-btn").click();  //模拟点击,刷新当前页
@@ -246,34 +259,34 @@
       });
     }
 
-    $('#btn_delete').on('click',function(){
-        delAll();
-      });
-      
+    $('#btn_delete').on('click', function () {
+      delAll();
+    });
+
     //批量删除
     function delAll(argument) {
       var checkStatus = table.checkStatus('com_table');
-      if(checkStatus.data.length==0){
-        parent.layer.msg('请先选择要删除的数据行！', {icon: 2});
-        return ;
+      if (checkStatus.data.length == 0) {
+        parent.layer.msg('请先选择要删除的数据行！', { icon: 2 });
+        return;
       }
       var ids = [];
-      $.each(checkStatus.data,function(index,room){
-        ids.push(room.id);
+      $.each(checkStatus.data, function (index, consum) {
+        ids.push(consum.consumptionId);
       });
       layer.confirm('确认要删除吗？' + ids, function (index) {
         //捉到所有被选中的，发异步进行删除
         $.ajax({
           type: "delete",
           async: true,
-          url: "/api/consumptions",
+          url: "/api/consumption",
           data: {
-            "ids": ids
+            "consumptionIds": ids
           },
           dataType: "json",
           success: function (result) {
             if (result.code == 200) {
-              layer.msg('删除成功', { icon: 1, time: 1000});
+              layer.msg('删除成功', { icon: 1, time: 1000 });
               $(".layui-laypage-btn").click();  //模拟点击,刷新当前页
             }
             else {

@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="./css/xadmin.css">
         <script src="./lib/layui/layui.js" charset="utf-8"></script>
         <script type="text/javascript" src="./js/xadmin.js"></script>
+        <script type="text/javascript" src="./js/jquery.min.js"></script>
         <!--[if lt IE 9]>
           <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
           <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -31,8 +32,7 @@
                     <div class="layui-card">
                         <div class="layui-card-header">最近一周商品销量TOP3</div>
                         <div class="layui-card-body" style="min-height: 280px;">
-                            <div id="main1" class="layui-col-sm12" style="height: 300px;"></div>
-
+                            <div id="main1" class="layui-col-sm12" style="width:600px;height: 300px;"></div>
                         </div>
                     </div>
 
@@ -112,8 +112,9 @@
                 trigger: 'axis',
                 axisPointer: {
                 type: 'shadow'
-        }
-            },
+                }
+            }
+            ,
             xAxis: {
                 type: 'category',
                 data: ['薯片','可乐','口香糖'],
@@ -132,9 +133,27 @@
             }]
         };
 
-
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
+
+        // myChart.showLoading();
+
+        // $.get('/api/',function (result) {
+        //     var names = [];  //类别数组
+        //     var labels = [];
+        //     if(result){
+        //         myChart.hideLoading();
+        //         $.each(data, function (index, item) {
+        //                     names.push(item.label); //逐个取出类别并填入类别数组
+        //                     values.push({
+        //                         name: item.label,
+        //                         value: item.count
+        //                     });
+        //             });
+        //     }
+        // }).fail(function (errorMsg) {
+        //     myChart.hideLoading();
+        // });
 
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main3'));
@@ -144,40 +163,55 @@
             tooltip : {
                 trigger: 'item',
                 formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-                orient: 'vertical',
-                left: 'left',
-                data: ['薯片','可乐','果汁','烟','酒','口香糖']
-            },
-            series : [
-                {
-                    name: '销量占比',
-                    type: 'pie',
-                    radius : '55%',
-                    center: ['50%', '60%'],
-                    roseType: 'radius',
-                    data:[
-                        {value:335, name:'薯片'},
-                        {value:310, name:'酒'},
-                        {value:234, name:'果汁'},
-                        {value:135, name:'烟'},
-                        {value:548, name:'可乐'},
-                        {value:279, name:'口香糖'}
-                    ],
-                    itemStyle: {
-                        emphasis: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
-                    }
-                }
-            ]
+            }
         };
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
+
+        myChart.showLoading();
+
+        $.get('/api/consumption/week',function (result) {
+            var names = [];  //类别数组
+            var labels = [];
+            if(result){
+                myChart.hideLoading();
+                $.each(result.data, function (index, item) {
+                            names.push(item.commodityName); //逐个取出类别并填入类别数组
+                            labels.push({
+                                name: item.commodityName,
+                                value: item.salesVolume
+                            });
+                    });
+                    myChart.hideLoading();
+                    myChart.setOption({
+                        legend: {
+                        orient: 'vertical',
+                        left: 'left',
+                        data: names
+                    },
+                    series : [
+                        {
+                            name: '销量占比',
+                            type: 'pie',
+                            radius : '55%',
+                            center: ['50%', '60%'],
+                            roseType: 'radius',
+                            data: labels,
+                            itemStyle: {
+                                emphasis: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ]
+                    });
+            }
+        }).fail(function (errorMsg) {
+            myChart.hideLoading();
+        });
 
 
         layui.use('carousel', function(){

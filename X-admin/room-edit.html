@@ -139,11 +139,10 @@
                                 if (result.code == 200) {
                                     parent.layui.table.reload('room_table', { page: { curr: $(".layui-laypage-em").next().html() } });
                                     xadmin.close();
-                                    parent.layer.msg('保存成功!', { icon: 6, time: 1000 });
-                                    // xadmin.father_reload();
+                                    parent.layer.msg('修改成功!', { icon: 6, time: 1000 });
                                 }
                                 else {
-                                    layer.msg('保存失败，请稍后再试!', { icon: 5, time: 1000 });
+                                    layer.msg('修改失败，请稍后再试!', { icon: 5, time: 1000 });
                                 }
                             },
                             error: function (errorMsg) {
