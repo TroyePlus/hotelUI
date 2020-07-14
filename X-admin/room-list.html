@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="./css/xadmin.css">
   <script src="./lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript" src="./js/xadmin.js"></script>
+  <script type="text/javascript" src="./js/xm-select.js"></script>
 </head>
 
 <body>
@@ -33,31 +34,20 @@
       <div class="layui-card">
         <div class="layui-card-body ">
           <form class="layui-form layui-col-space5">
-            <div class="layui-inline layui-show-xs-block">
-              <select name="floor" id="floor">
-                <option value="">请选择</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
+            <div class="layui-inline layui-show-xs-block" style="width: 300px;">
+              <div id="select_1"></div>
+            </div>
+            <div class="layui-inline layui-show-xs-block" style="width: 300px;">
+              <input type="text" name="typeName" placeholder="请输入房间类型"" autocomplete="off" class="layui-input"
+                     style="height: 36px;">
             </div>
             <div class="layui-inline layui-show-xs-block">
-              <select name="typeId" id="typeId">
-                <option value="">请选择</option>
-                <option value="1">标准间</option>
-                <option value="2">三人间</option>
-                <option value="3">豪华间</option>
-                <option value="4">标准套房</option>
-                <option value="5">豪华套房</option>
-              </select>
-            </div>
-            <div class="layui-inline layui-show-xs-block">
-              <input type="text" name="id" placeholder="请输入房间号" autocomplete="off" class="layui-input">
+              <input type="text" name="roomId" placeholder="请输入房间号" autocomplete="off" class="layui-input"
+                     style="height: 36px;">
             </div>
             <div class="layui-inline layui-show-xs-block">
               <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+              <button class="layui-btn" type="reset" id="btn_reset"><i class="layui-icon layui-icon-refresh"></i></button>
             </div>
           </form>
         </div>
@@ -103,14 +93,29 @@
 </div>
 </body>
 <script>
+  var demo1 = xmSelect.render({
+    el: '#select_1',
+    name: 'floor',
+    theme: {
+      color: '#8dc63f',
+    },
+    tips: '选择楼层',
+    data: [
+      { name: '一', value: 1 },
+      { name: '二', value: 2 },
+      { name: '三', value: 3 },
+      { name: '四', value: 4 },
+      { name: '五', value: 5 },
+    ]
+  });
 
   layui.use(['table','form'], function () {
     // $ = layui.jquery;
     var table = layui.table,
-    form = layui.form;
+            form = layui.form;
     table.render({
       elem: '#table'
-      , url: '/rooms' //数据接口
+      , url: '/api/rooms' //数据接口
       , method: 'get'
       , page: true //开启分页
       , id: 'room_table'
@@ -126,11 +131,10 @@
           , { field: 'roomId', title: 'ID', fixed: 'left', width: 130, sort: true }
           , { field: 'floor', title: '楼层', unresize: true, width: 120, sort: true }
           , {
-          field: 'd.roomType.id', title: '类型ID', unresize: true, width: 130,
-          templet: '<div>{{d.roomType.id}}</div>'
+          field: 'roomType', title: '类型', unresize: true, width: 130
+          ,templet: '<div>{{d.roomType.name}}</div>'
         }
-          , {
-          field: 'status', title: '状态', unresize: true, width: 90, align: 'center',
+          , { field: 'status', title: '状态', unresize: true, width: 90, align: 'center',
           templet: '#status_bar'
         }
           , { fixed: 'right', title: '操作', toolbar: '#bar_list', width: 120, align: 'center' }
@@ -138,24 +142,52 @@
       ],
       text: {
         none: '暂未查询到相关数据'
-      },
-      request: {
-        pageName: 'pn', //页码的参数名称，默认：page
-        limitName: 'ps', //每页数据量的参数名，默认：limit
       }
+      // ,
+      // request: {
+      //   pageName: 'page', //页码的参数名称，默认：page
+      //   limitName: 'ps', //每页数据量的参数名，默认：limit
+      // }
       , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
         return {
           "code": 0, //解析接口状态
-          // "msg": res.message, //解析提示文本
-          "count": res.total, //解析数据长度
+          "msg": res.msg, //解析提示文本
+          "count": res.count, //解析数据长度
           "data": res.data //解析数据列表
         };
       }
     });
 
-    function table_reload() {
+    form.on('submit(search)', function (data) {
+      //异步请求搜索
+      // layer.msg(JSON.stringify(data.field));
+      table_reload(data.field);
+      return false;
+    });
 
+    // $('#btn_reset').on('click',function(){
+    //   search_reload();
+    // });
+
+    function table_reload(obj) {
+      table.reload('room_table', {
+        url: '/api/rooms',
+        method: 'get',
+        where: {
+          "roomId": obj.roomId,
+          "floor": obj.floor,
+          "typeName": obj.typeName
+        }
+      });
     }
+
+    // function search_reload() {
+    //         table.reload('room_table',{
+    //                 url: '/api/rooms',
+    //                 method: 'get'
+    //             }
+    //         );
+    //     }
 
     //处理操作
     table.on('tool(handle)', function (obj) {
@@ -182,8 +214,9 @@
         $.ajax({
           type: "patch",
           async: true,
-          url: "/rooms/" + data.id,
+          url: "/api/room",
           data: {
+            "roomId": data.roomId,
             "status": status
           },
           dataType: "json",
@@ -204,7 +237,7 @@
                 stateTool.attr('title','禁用');
                 stateTool.attr('lay-event','disable');
                 stateTool.find('i').html('&#xe601;');
-               // toolbars.prepend('<a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="take_off">下架</a>');
+                // toolbars.prepend('<a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="take_off">下架</a>');
               }
               else {
                 stateCol.find('span').addClass('layui-btn-disabled').html('不可订');
@@ -273,9 +306,9 @@
         $.ajax({
           type: "delete",
           async: true,
-          url: "/room",
+          url: "/api/room",
           data: {
-            "id": obj.data.roomId,
+            "roomId": obj.data.roomId,
           },
           dataType: "json",
           success: function (result) {
@@ -297,15 +330,15 @@
     }
 
     $('#btn_delete').on('click',function(){
-        delAll();
-      });
+      delAll();
+    });
 
     //批量删除
     function delAll() {
       var checkStatus = table.checkStatus('room_table');
       if(checkStatus.data.length==0){
         parent.layer.msg('请先选择要删除的数据行！', {icon: 2});
-	      return ;
+        return ;
       }
       var ids = [];
       $.each(checkStatus.data,function(index,room){
@@ -316,7 +349,7 @@
         $.ajax({
           type: "delete",
           async: true,
-          url: "/rooms",
+          url: "/api/rooms",
           data: {
             "ids": ids
           },

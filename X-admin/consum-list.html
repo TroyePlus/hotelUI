@@ -12,13 +12,13 @@
   <link rel="stylesheet" href="./css/xadmin.css">
   <script src="./lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript" src="./js/xadmin.js"></script>
-  <script type="text/javascript" src="./js/xm-select.js"></script>
+  <!-- <script type="text/javascript" src="./js/xm-select.js"></script> -->
 </head>
 
 <body>
   <div class="x-nav">
     <span class="layui-breadcrumb">
-      <a href="#“>首页</a>
+      <a href="#">首页</a>
       <a href="#">消费管理</a>
       <a>
         <cite>消费列表</cite></a>
@@ -37,16 +37,20 @@
               <div class="layui-form-item layui-col-space5">
                 <label class="layui-form-label" style="width: 50px;">房客ID</label>
                 <div class="layui-input-inline layui-show-xs-block" style="width: 150px;">
-                  <input type="text" name="tenant.id" placeholder="请输入房客编号" autocomplete="off" class="layui-input">
+                  <input type="text" name="tId" placeholder="请输入房客编号" autocomplete="off" class="layui-input">
                 </div>
 
                 <label class="layui-form-label" style="width: 50px;">商品ID</label>
                 <div class="layui-input-inline layui-show-xs-block" style="width: 150px;">
-                  <input type="text" name="commodity.id" placeholder="请输入商品编号" autocomplete="off" class="layui-input">
+                  <input type="text" name="comId" placeholder="请输入商品编号" autocomplete="off" class="layui-input">
+                </div>
+                <label class="layui-form-label" style="width: 50px;">日期</label>
+                <div class="layui-input-inline layui-show-xs-block" style="width:150px;">
+                    <input type="text" name="date" id="date" class="layui-input">
                 </div>
                 <label class="layui-form-label" style="width: 50px;">单号</label>
                 <div class="layui-input-inline layui-show-xs-block" style="width: 150px;">
-                  <input type="text" name="consumptionId" placeholder="请输入购买单号" autocomplete="off" class="layui-input">
+                  <input type="text" name="conId" placeholder="请输入购买单号" autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-inline layui-show-xs-block">
                   <button class="layui-btn" lay-submit="" lay-filter="search"><i
@@ -79,19 +83,13 @@
   </div>
 </body>
 <script>
-  // var demo = xmSelect.render({
-  //   el: '#demo',
-  //   theme: {
-  //     color: '#1cbbb4',
-  //   },
-  //   tips: '选择商品',
-  //   data: [
-  //     { name: '水果', value: 1 },
-  //     { name: '薯片', value: 2 },
-  //     { name: '饮料', value: 3 },
-  //     { name: '烟酒', value: 4 },
-  //   ],
-  // })
+  layui.use('laydate',function(){
+            var laydate = layui.laydate;
+            
+            laydate.render({
+            elem: '#date' //指定元素
+            });
+        });
 
   layui.use(['table','form'], function () {
     $ = layui.jquery;
@@ -100,7 +98,7 @@
 
     table.render({
       elem: '#table'
-      , url: '/cosums' //数据接口
+      , url: '/api/consumptions' //数据接口
       , method: 'get'
       , page: true //开启分页
       , id: 'com_table'
@@ -114,32 +112,36 @@
           { checkbox: true, fixed: true, align: 'center' }
           , { field: 'consumptionId', title: '消费单号', unresize: true, width: 120, sort: true }
           , {
-            field: 'd.tenant.id', title: '客人ID', unresize: true, width: 130,
+            field: 'd.tenant.id', title: '房客ID', unresize: true, width: 130,
             templet: '<div>{{d.tenant.id}}</div>'
           }
           , {
-            field: 'd.tenant.name', title: '客人姓名', unresize: true, width: 130,
-            templet: '<div>{{d.product.name}}</div>'
+            field: 'd.tenant.name', title: '房客姓名', unresize: true, width: 130,
+            templet: '<div>{{d.tenant.name}}</div>'
           }
-          , { field: 'commodityId', title: '商品编号', unresize: true, width: 120, sort: true }
+          , { field: 'd.commodity.id', title: '商品编号', unresize: true, width: 120,
+            templet: '<div>{{d.commodity.id}}</div>'}
+          , { field: 'd.commodity.name', title: '商品名称', unresize: true, width: 120,
+            templet: '<div>{{d.commodity.name}}</div>'}
           , { field: 'quantity', title: '数量', unresize: true, width: 80}
-          , { field: 'price', title: '金额', unresize: true, width: 90, sort: true }
+          , { field: 'price', title: '金额', unresize: true, width: 90}
           , { field: 'date', title: '日期', unresize: true, width: 130}
           , { fixed: 'right', title: '操作', toolbar: '#bar_list', width: 120, align: 'center' }
         ]
       ],
       text: {
         none: '暂未查询到相关数据'
-      },
-      request: {
-        pageName: 'pn', //页码的参数名称，默认：page
-        limitName: 'ps', //每页数据量的参数名，默认：limit
       }
+      // ,
+      // request: {
+      //   pageName: 'pn', //页码的参数名称，默认：page
+      //   limitName: 'ps', //每页数据量的参数名，默认：limit
+      // }
       , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
         return {
           "code": 0, //解析接口状态
-          // "msg": res.message, //解析提示文本
-          "count": res.total, //解析数据长度
+          "msg": res.msg, //解析提示文本
+          "count": res.count, //解析数据长度
           "data": res.data //解析数据列表
         };
       }
@@ -147,20 +149,20 @@
 
     form.on('submit(search)', function (data) {
       //异步请求搜索
-      layer.msg(data.field);
-      // table_reload($())
+      // layer.msg(JSON.stringify(data.field));
+      table_reload(data.field);
       return false;
-    })
+    });
 
     //根据输入进行多条件模糊搜索,重新渲染表格
-    function table_reload(tId,comId,conId) {
+    function table_reload(obj) {
       table.reload('com_table', {
-        url: '/consums',
+        url: '/api/consumptions',
         method: 'get',
         where: {
-          "tId": tId,
-          "comId": comId,
-          "conId": conId
+          "tenantId": obj.tId,
+          "commodityId": obj.comId,
+          "consumptionId": obj.conId
         }
       });
     }
@@ -222,7 +224,10 @@
         $.ajax({
           type: "delete",
           async: true,
-          url: "/consums/" + obj.data.roomId,
+          url: "/api/consumption",
+          data: {
+            "consumptionId": obj.data.roomId
+          },
           dataType: "json",
           success: function (result) {
             if (result.status == 200) {
@@ -247,12 +252,38 @@
       
     //批量删除
     function delAll(argument) {
-      var data = tableCheck.getData();
-
-      layer.confirm('确认要删除吗？' + data, function (index) {
+      var checkStatus = table.checkStatus('com_table');
+      if(checkStatus.data.length==0){
+        parent.layer.msg('请先选择要删除的数据行！', {icon: 2});
+        return ;
+      }
+      var ids = [];
+      $.each(checkStatus.data,function(index,room){
+        ids.push(room.id);
+      });
+      layer.confirm('确认要删除吗？' + ids, function (index) {
         //捉到所有被选中的，发异步进行删除
-        layer.msg('删除成功', { icon: 1 });
-        $(".layui-form-checked").not('.header').parents('tr').remove();
+        $.ajax({
+          type: "delete",
+          async: true,
+          url: "/api/consumptions",
+          data: {
+            "ids": ids
+          },
+          dataType: "json",
+          success: function (result) {
+            if (result.code == 200) {
+              layer.msg('删除成功', { icon: 1, time: 1000});
+              $(".layui-laypage-btn").click();  //模拟点击,刷新当前页
+            }
+            else {
+              layer.msg('删除失败,请稍后再试!', { icon: 2, time: 1000 });
+            }
+          },
+          error: function (errorMsg) {
+            layer.msg('请求失败，请稍后再试!', { icon: 2, time: 1000 });
+          }
+        });
       });
     }
   });
