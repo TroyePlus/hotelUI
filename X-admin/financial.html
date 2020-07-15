@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    <head>
+        <meta charset="UTF-8">
+        <title>欢迎页面-X-admin2.2</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+        <script src="./lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/xadmin.js"></script>
+        <script src="js/jquery.min.js"></script>
+    </head>
+    <body>
+        <div class="demoTable">
+            搜索日期：
+            <div class="layui-inline">
+              <input class="layui-input" name="id" id="searchDate" autocomplete="off">
+            </div>
+            <button class="layui-btn" data-type="reload" onclick="search()">搜索</button>
+          </div>
+     
+    <table class="layui-hide" id="test" lay-filter="test"></table>
+     
+                  
+              
+    <script src="lib/layui/layui.js" charset="utf-8"></script>
+     
+    <script>
+
+var getDay = function(str){
+    $.ajax({
+            type: "post",
+            url: 'http://localhost:8080/api/form/finance/day',
+            xhrFields: {withCredentials: true},
+            data: { 
+                date:str
+            },
+            success: function (msg) {
+                console.log(msg);
+                var temp = msg.data;
+                layui.use('table', function(){
+                    var table = layui.table;
+                    table.render({
+                        elem: '#test'
+                        // ,url:'data.json'//这边写请求数据的路径
+                        ,toolbar: '#toolbarDemo'
+                        ,title: '财务日报表'
+                        ,totalRow: true
+                        ,cols: [[
+                        // {type: 'radio', fixed: 'left'}
+                        {field:'financeId', title:'表单号', fixed: 'left', sort: true, totalRowText: '当日总收入'}
+                        ,{field:'date', title:'时间'}
+                        ,{field:'roomType', title:'房间类型' }
+                        ,{field:'roomPrice', title:'此类型房间收入' ,sort: true ,totalRow: true}
+                        ,{field:'commodityPrice', title:'商品花费',totalRow: true}
+                        ,{field:'replacePrice', title:'更换物品花费',totalRow: true}
+                        ]]
+                        ,page: true,
+                        data:temp
+                });
+      
+      //工具栏事件
+    });
+            },
+            error: function (msg) {
+                console.log('请求报错！');
+            }
+        });
+}
+
+getDay("2020-07-12")
+    
+    
+    </script>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+
+                
+                <div class="layui-col-sm12 layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header">收入来源月统计</div>
+                        <div class="layui-card-body" style="min-height: 280px;">
+                            <div id="main1" class="layui-col-sm12" style="height: 300px;"></div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm12 layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header">收入来源月分析</div>
+                        <div class="layui-card-body" style="min-height: 280px;">
+                            <div id="main2" class="layui-col-sm12" style="height: 300px;"></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+
+        <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+        <script type="text/javascript">
+        var myDate = new Date();
+        var str = myDate.getFullYear() + '-' + (myDate.getMonth()+1);
+
+var getmouth = function(str){
+    $.ajax({
+            type: "post",
+            url: 'http://localhost:8080/api/form/finance/month',
+            xhrFields: {withCredentials: true},
+            data: {
+                date:str
+            },
+            success: function (msg) {
+                iniet(msg)
+            },
+            error: function (msg) {
+                console.log('请求报错！');
+            }
+        });
+}
+getmouth(str);
+        
+
+var chooseData = function(res){
+    var data = res.data;
+    for(let i = 0;i < data.length;i++){
+
+        TroomPrice+=data[i].roomPrice;
+        TcommodityPrice+=data[i].commodityPrice;
+        TreplacePrice+=data[i].replacePrice;
+        time.push(data[i].date);
+        roomPrice.push(data[i].roomPrice);
+        commodityPrice.push(data[i].commodityPrice);
+        replacePrice.push(data[i].replacePrice);
+        totalPrice.push(data[i].totalPrice);
+    }
+}
+
+
+var TroomPrice = 0;
+var TcommodityPrice = 0;
+var TreplacePrice = 0;
+var time = [];
+var roomPrice = [];
+var commodityPrice = [];
+var replacePrice = [];
+var totalPrice = [];
+
+var iniet = function(msg){
+
+
+        chooseData(msg);
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main1'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '收入折线图'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['住房收入','消费收入','消耗品替换收入','总收入']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                name: '当月时间',
+                // boundaryGap: false,
+                data: time//这个地方要获取特定天数的日期
+            },
+            yAxis: {
+                type: 'value'
+            },
+            //这个地方要自己封装一下函数  处理不通数据的请求情况
+            series: [
+                {
+                    name:'住房收入',
+                    type:'line',
+                    stack: '总量',
+                    data:roomPrice
+                },
+                {
+                    name:'消费收入',
+                    type:'line',
+                    stack: '总量',
+                    data:commodityPrice
+                },
+                {
+                    name:'消耗品替换收入',
+                    type:'line',
+                    stack: '总量',
+                    data:replacePrice
+                },
+                {
+                    name:'总收入',
+                    type:'line',
+                    stack: '总量',
+                    data:totalPrice
+                }
+            ]
+        };
+
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+         // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main2'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b}: {c} ({d}%)'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 10,
+                data: ['住房收入', '客人消费', '替换物品']
+            },
+            series: [
+                {
+                    name: '收入来源',
+                    type: 'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: '30',
+                            fontWeight: 'bold'
+                        }
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                    data: [
+                        {value: TroomPrice, name: '住房收入'},
+                        {value: TcommodityPrice, name: '客人消费'},
+                        {value: TreplacePrice, name: '替换物品'},
+                    ]
+                }
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+}
+    </script>
+    <script>
+        var search = function(){
+            TroomPrice = 0;
+            TcommodityPrice = 0;
+            TreplacePrice = 0;
+            time = [];
+            roomPrice = [];
+            commodityPrice = [];
+            replacePrice = [];
+            totalPrice = [];
+            var searchDate = document.getElementById('searchDate').value;
+            var searchmouth = searchDate.slice(0,7);
+            getDay(searchDate);
+            getmouth(searchmouth);
+        }
+    </script>
+    </body>
+</html>

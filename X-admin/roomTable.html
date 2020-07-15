@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Layui</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
+  <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+  <script src="js/jquery.min.js" charset="utf-8"></script>
+  <link rel="stylesheet" href="css/xadmin.css"  media="all">
+</head>
+<style>
+    .layui-table-cell{
+    height:100px;
+    line-height: 100px;
+}
+</style>
+<body>
+ 
+<table class="layui-hide" id="test"></table>
+              
+          
+<script src="lib/layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 --> 
+ 
+<script>
+layui.use(['table','element'], function(){
+  var table = layui.table;
+  var element = layui.element;
+
+  var temp;
+  $.ajax({
+            type: "get",
+            url: 'http://localhost:8080/api/form/room',
+            xhrFields: {withCredentials: true},
+            success: function (msg) {
+                temp = msg.data;
+                table.render({
+    elem: '#test'
+    ,id:'room'
+    ,cellMinWidth: 80 
+    ,cols: [[
+      {title:"房间", sort: true,width : 150,height : 150 ,templet: function(res){
+        return `<div class="layui-card">
+        <div class="layui-card-header" align="center">
+            <i class="layui-icon layui-icon-home" style="font-size: 30px; color: #${res.status=="Y"? "00ff60" : "ff3333"};"></i>
+        </div>
+        <div align="center" class="layui-card-body">
+          ${res.roomId}
+        </div>
+      </div>`
+        }}
+      ,{field:'floor',title:"楼层"} 
+      ,{field:'price', title:"单价",sort: true}
+      ,{field:'roomType',title:"房间型号"}
+      ,{field:'status',title:"状态",sort: true}
+      ,{field:'userName', title:"用户"} 
+      ,{title:"进度", templet: function(res){
+        if(res.status == "Y"){
+          return ""
+        }else{
+        let myDate = new Date();
+        let time = myDate.toLocaleDateString().split('/').join('-') + ` ${myDate.getHours()}:00:00`;
+        let persent = dayCha(res.stayStartTime+":00:00",time)/dayCha(res.stayStartTime+":00:00",res.stayEndTime+":00:00");
+        persent = persent*100;
+        return `<div class="layui-card">
+        <div class="layui-card-header" align="center">
+          退房时间${res.stayEndTime}
+        </div>
+        <div align="center" class="layui-card-body">
+          <div style="margin-top:13px"><div class="layui-progress">
+              <div class="layui-progress-bar" lay-percent="${ Math.floor(persent)}%"></div>
+        </div></div>
+        </div>
+      </div>`;
+        }
+        
+      }}
+    ]],
+    data:temp,
+    done:function (res,currentCount) {
+				//***重点***：table渲染完成后渲染element进度条
+                element.render();
+                var html = `<a class="x-admin-backlog-body"">
+                                        <h3>目前可用房间数</h3>
+                                        <p>
+                                            <cite>${countNum(res)}</cite></p>
+                                    </a>`
+                var body = document.getElementsByTagName("body")[0];
+                var wrap=document.createElement("div");
+                wrap.style.position = "fixed";
+                wrap.style.right = "150px"
+                wrap.style.bottom= "70px"
+                wrap.style.zIndex = 10
+                wrap.innerHTML = html;
+                var first=document.body.firstChild;//得到页面的第一个元素
+var wraphtml=document.body.insertBefore(wrap,first);
+            }
+
+  });
+            },
+            error: function (msg) {
+                console.log('请求报错！');
+            }
+        })
+
+  
+});
+
+var countNum = function(res){
+  var num =0;
+  for (let i = 0;i<res.count; i++) {
+      if(res.data[i].status == "Y"){
+        num++;
+      }
+  }
+  return num;
+}
+
+
+// var data = [
+
+//         {
+//             "price": 192.5,
+//             "floor": 5,
+//             "roomId": 503,
+//             "roomType": "大床房",
+//             "status": "Y"
+//         },
+//         {
+//             "price": 192.5,
+//             "floor": 5,
+//             "roomId": 504,
+//             "roomType": "大床房",
+//             "status": "Y"
+//         },
+//         {
+//             "price": 192.5,
+//             "floor": 5,
+//             "roomId": 512,
+//             "roomType": "大床房",
+//             "status": "Y"
+//         },
+//         {
+//             "stayEndTime": "2020-07-18 00",
+//             "price": 113.5,
+//             "stayStartTime": "2020-07-12 00",
+//             "floor": 5,
+//             "userName": "bilibili",
+//             "roomId": 518,
+//             "roomType": "单人房",
+//             "status": "N"
+//         }
+    
+//   ]
+
+function dayCha(startime,endime){
+ 
+ startime = startime.replace(new RegExp("-","gm"),"/");//转换-变为/
+ var start       = new Date(startime);
+ var startYear   = start.getFullYear(); //开始年份
+ var startMonth  = start.getMonth() + 1;//开始月份
+ var startDay    = start.getDate();     //开始日期
+ var startMiao   = start.getTime();
+
+ endime = endime.replace(new RegExp("-","gm"),"/");
+ var end      = new Date(endime);
+ var endYear  = end.getFullYear(); //结束年份
+ var endMonth = end.getMonth() + 1;//结束月份
+ var endDay   = end.getDate();     //结束日期
+ var endMiao  = end.getTime();
+
+ var years = 0;
+ var months = endMonth - startMonth + (endYear - startYear) * 12;//总月
+ if (endMonth * 100 + endDay < startMonth * 100 + startDay) {
+     months--;//如果结束日期<输入日期，月数要-1
+ }
+ years = Math.floor(months / 12);//取整计算年数
+ months = months % 12;//取余计算月数
+ var middleDate = new Date(startime);//中间时间
+ middleDate.setFullYear(startYear + years);//设置中间时间年份
+ middleDate.setMonth(start.getMonth() + months);//设置中间时间月份
+ var days =  Math.floor( ( endMiao- middleDate.getTime()) / 24 / 60/ 60 / 1000);//计算天数
+
+ //时间差的毫秒数
+ var chaTime=endMiao-startMiao;
+ //计算出小时数
+ var yu=chaTime % (24*3600*1000);//86400000
+ var hour=Math.floor(yu/(3600*1000));//3600000
+ //计算相差分钟数
+ var yuH=chaTime % (3600*1000);
+ var min=Math.floor(yuH/(60*1000));//60000
+ //计算相差秒数
+ var yuM=chaTime%(60*1000);
+ var sec=Math.floor(yuM/1000);//1000
+
+ return days*24+hour;
+
+}
+</script>
+
+</body>
+</html>

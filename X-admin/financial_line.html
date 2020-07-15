@@ -1,0 +1,154 @@
+<!doctype html>
+<html class="x-admin-sm">
+    <head>
+        <meta charset="UTF-8">
+        <title>后台登录-X-admin2.2</title>
+        <meta name="renderer" content="webkit|ie-comp|ie-stand">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+        <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+        
+    </head>
+    <body>
+
+                            <div id="main" style="width: 100%;height:400px;"></div>
+
+         <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+        <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        //这里首先请求数据
+        var res = {
+    "code": 200,
+    "data": [
+        
+        {
+            "financeId": 2,
+            "date": "2020-07-11",
+            "roomType": 1,
+            "commodityPrice": 60.0,
+            "totalPrice": 490.0,
+            "replacePrice": 55.0,
+            "roomPrice": 385.0
+        },
+        {
+            "financeId": 1,
+            "date": "2020-07-12",
+            "roomType": 1,
+            "commodityPrice": 80.0,
+            "totalPrice": 643.5,
+            "replacePrice": 75.0,
+            "roomPrice": 498.5
+        },
+        {
+            "financeId": 5,
+            "date": "2020-07-13",
+            "roomType": 2,
+            "commodityPrice": 100.0,
+            "totalPrice": 313.5,
+            "replacePrice": 100.0,
+            "roomPrice": 113.5
+        }
+    ],
+    "success": true,
+    "message": "成功"
+}
+
+var time = [];
+var roomPrice = [];
+var commodityPrice = [];
+var replacePrice = [];
+var totalPrice = [];
+
+var chooseData = function(res){
+    var data = res.data;
+    for(let i = 0;i < data.length;i++){
+        time.push(data[i].date);
+        console.log(time)
+        roomPrice.push(data[i].roomPrice);
+        commodityPrice.push(data[i].commodityPrice);
+        replacePrice.push(data[i].replacePrice);
+        totalPrice.push(data[i].totalPrice);
+    }
+}
+        var myChart = echarts.init(document.getElementById('main'));
+        chooseData(res);
+        console.log(time)
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '收入来源折线图'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['住房收入','消费收入','消耗品替换收入','总收入']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                name: '当月时间',
+                // boundaryGap: false,
+                data: time//这个地方要获取特定天数的日期
+            },
+            yAxis: {
+                type: 'value'
+            },
+            //这个地方要自己封装一下函数  处理不通数据的请求情况
+            series: [
+                {
+                    name:'住房收入',
+                    type:'line',
+                    stack: '总量',
+                    data:roomPrice
+                },
+                {
+                    name:'消费收入',
+                    type:'line',
+                    stack: '总量',
+                    data:commodityPrice
+                },
+                {
+                    name:'消耗品替换收入',
+                    type:'line',
+                    stack: '总量',
+                    data:replacePrice
+                },
+                {
+                    name:'总收入',
+                    type:'line',
+                    stack: '总量',
+                    data:totalPrice
+                }
+            ]
+        };
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,120 @@
+<!doctype html>
+<html class="x-admin-sm">
+    <head>
+        <meta charset="UTF-8">
+        <title>后台登录-X-admin2.2</title>
+        <meta name="renderer" content="webkit|ie-comp|ie-stand">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+        <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+    </head>
+    <body>
+                            <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+                            <div id="main" style="width: 100%;height:400px;"></div>
+
+        <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+        <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/extension/bmap.min.js"></script>
+        <script type="text/javascript">
+        //先取数据
+        var res = {
+    "code": 200,
+    "data": [
+        
+        {
+            "financeId": 2,
+            "date": "2020-07-11",
+            "roomType": 1,
+            "commodityPrice": 60.0,
+            "totalPrice": 490.0,
+            "replacePrice": 55.0,
+            "roomPrice": 385.0
+        },
+        {
+            "financeId": 1,
+            "date": "2020-07-12",
+            "roomType": 1,
+            "commodityPrice": 80.0,
+            "totalPrice": 643.5,
+            "replacePrice": 75.0,
+            "roomPrice": 498.5
+        },
+        {
+            "financeId": 5,
+            "date": "2020-07-13",
+            "roomType": 2,
+            "commodityPrice": 100.0,
+            "totalPrice": 313.5,
+            "replacePrice": 100.0,
+            "roomPrice": 113.5
+        }
+    ],
+    "success": true,
+    "message": "成功"
+}
+        var roomPrice = 0;
+        var commodityPrice = 0;
+        var replacePrice = 0;
+
+        var chooseData = function(res){
+            var data = res.data;
+            for(let i = 0;i < data.length;i++){
+
+                roomPrice+=data[i].roomPrice;
+                commodityPrice+=data[i].commodityPrice;
+                replacePrice+=data[i].replacePrice;
+            }
+        }
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+        chooseData(res)
+
+        // 指定图表的配置项和数据
+        var option = {
+    tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b}: {c} ({d}%)'
+    },
+    legend: {
+        orient: 'vertical',
+        left: 10,
+        data: ['住房收入', '客人消费', '替换物品']
+    },
+    series: [
+        {
+            name: '收入来源',
+            type: 'pie',
+            radius: ['50%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+                show: false,
+                position: 'center'
+            },
+            emphasis: {
+                label: {
+                    show: true,
+                    fontSize: '30',
+                    fontWeight: 'bold'
+                }
+            },
+            labelLine: {
+                show: false
+            },
+            data: [
+                {value: roomPrice, name: '住房收入'},
+                {value: commodityPrice, name: '客人消费'},
+                {value: replacePrice, name: '替换物品'},
+            ]
+        }
+    ]
+};
+
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+    </body>
+</html>
