@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.2</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+        content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+            <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+            <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+</head>
+
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form class="layui-form">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        id
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="id" name="id" required="" lay-verify="required"
+                            autocomplete="off" class="layui-input" disabled>
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        ID
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="name" class="layui-form-label">
+                        <span class="x-red">*</span>name</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="name" name="name" required="required" lay-verify="name"
+                            autocomplete="off" class="layui-input" value="testname"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="price" class="layui-form-label">
+                        <span class="x-red">*</span>price</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="price" name="price" required="required" lay-verify="price"
+                            autocomplete="off" class="layui-input" value="testname"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="numOfPerson" class="layui-form-label">
+                        <span class="x-red">*</span>numOfPerson</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="numOfPerson" name="numOfPerson" required="required" lay-verify="numOfPerson"
+                            autocomplete="off" class="layui-input" value="testname"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="numOfBed" class="layui-form-label">
+                        <span class="x-red">*</span>numOfBed</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="numOfBed" name="numOfBed" required="required" lay-verify="numOfBed"
+                            autocomplete="off" class="layui-input" value="testname"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="totalQuantity" class="layui-form-label">
+                        <span class="x-red">*</span>totalQuantity</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="totalQuantity" name="totalQuantity" required="required" lay-verify="totalQuantity"
+                            autocomplete="off" class="layui-input" value="testname"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="airConditioner" class="layui-form-label">
+                        <span class="x-red">*</span>airConditioner</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="airConditioner" name="airConditioner" required="required" lay-verify="airConditioner"
+                            autocomplete="off" class="layui-input" value="testname"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="lengthOfBed" class="layui-form-label">
+                        <span class="x-red">*</span>lengthOfBed</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="lengthOfBed" name="lengthOfBed" required="required" lay-verify="lengthOfBed"
+                            autocomplete="off" class="layui-input" value="testname"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="widthOfBed" class="layui-form-label">
+                        <span class="x-red">*</span>widthOfBed</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="widthOfBed" name="widthOfBed" required="required" lay-verify="widthOfBed"
+                            autocomplete="off" class="layui-input" value="testname"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="remainingQuantity" class="layui-form-label">
+                        <span class="x-red">*</span>remainingQuantity</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="remainingQuantity" name="remainingQuantity" required="required" lay-verify="remainingQuantity"
+                            autocomplete="off" class="layui-input" value="testname"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="roomService" class="layui-form-label">
+                        <span class="x-red">*</span>roomService</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="roomService" name="roomService" required="required" lay-verify="roomService"
+                            autocomplete="off" class="layui-input" value="testname"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="internet" class="layui-form-label">
+                        <span class="x-red">*</span>internet</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="internet" name="internet" required="required" lay-verify="internet"
+                            autocomplete="off" class="layui-input" value="testname"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="hasBreakfast" class="layui-form-label">
+                        <span class="x-red">*</span>hasBreakfast</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="hasBreakfast" name="hasBreakfast" required="required" lay-verify="hasBreakfast"
+                            autocomplete="off" class="layui-input" value="testname"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="hasReserve" class="layui-form-label">
+                        <span class="x-red">*</span>hasReserve</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="hasReserve" name="hasReserve" required="required" lay-verify="hasReserve"
+                            autocomplete="off" class="layui-input" value="testname"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="hasDiscount" class="layui-form-label">
+                        <span class="x-red">*</span>hasDiscount</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="hasDiscount" name="hasDiscount" required="required" lay-verify="hasDiscount"
+                            autocomplete="off" class="layui-input" value="testname"></div>
+                </div>
+                
+                
+                <div class="layui-form-item">
+                    <label for="repass" class="layui-form-label"></label>
+                    <button class="layui-btn" lay-filter="add" lay-submit="">修改</button></div>
+            </form>
+        </div>
+    </div>
+    <script>
+        layui.use('upload', function () {
+            var upload = layui.upload;
+
+            //执行实例
+            var uploadInst = upload.render({
+                elem: '#test1' //绑定元素
+                , url: '/upload/' //上传接口
+                , done: function (res) {
+                    //上传完毕回调
+                }
+                , error: function () {
+                    //请求异常回调
+                }
+            });
+        });
+    </script>
+    <script>
+        function init(data) {
+            layui.use(['form', 'layer', 'jquery'],
+                function () {
+                    $ = layui.jquery;
+                    var form = layui.form,
+                        layer = layui.layer;
+
+                    $("#id").val(data.id);
+                    $("#name").val(data.name);
+                    $("#price").val(data.price);
+                    $("#numOfPerson").val(data.numOfPerson);
+                    $("#numOfBed").val(data.numOfBed);
+                    $("#totalQuantity").val(data.totalQuantity);
+                    $("#airConditioner").val(data.airConditioner);
+                    $("#lengthOfBed").val(data.lengthOfBed);
+                    $("#widthOfBed").val(data.widthOfBed);
+                    $("#remainingQuantity").val(data.remainingQuantity);
+                    $("#roomService").val(data.roomService);
+                    $("#internet").val(data.internet);
+                    $("#hasBreakfast").val(data.hasBreakfast);
+                    $("#hasReserve").val(data.hasReserve);
+                    $("#hasDiscount").val(data.hasDiscount);
+
+                    //自定义验证规则
+                    form.verify({
+                        identity: function (value) {
+                            if (value.length <= 0) {
+                                return '身份证号不能为空';
+                            }
+                            var identity_list = [];
+                            for (i in identity_list) {
+                                if (value == identity_list[i])
+                                    return '房客已存在';
+                            }
+                        },
+                        name: function (value) {
+                            if (value.length <= 0) {
+                                return '姓名不能为空';
+                            }
+                        }
+                    });
+
+                    //监听提交
+                    form.on('submit(add)',
+                        function (data) {
+                            data.field.id = Number(data.field.id);
+                            alert(JSON.stringify(data.field) );
+                            //发异步，把数据提交给php
+                            var putdata=JSON.stringify(data.field);
+
+                            $.ajax({
+                                url: 'http://127.0.0.1:8080/api/baseinfo/RoomType',
+                                type: "put",
+                                data: putdata,
+                                contentType: "application/json;charset=utf-8",
+                                success: function (result) {
+                                    if (result.code == 200) {
+                                        parent.layui.table.reload('roomtype', { page: { curr: $(".layui-laypage-em").next().html() } });
+                                        xadmin.close();
+                                        parent.layer.msg('添加成功!', { icon: 6, time: 1000 });
+                                    } else {
+                                        layer.msg('添加失败，请稍后再试!', { icon: 5, time: 1000 });
+                                    }
+                                },
+                                error: function (errorMsg) {
+                                    console.log(errorMsg);
+                                    layer.msg('请求失败，请稍后再试!', { icon: 5, time: 1000 });
+                                }
+                                
+                            });
+
+
+                            return false;
+                        });
+
+                });
+
+        };
+
+    </script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+</body>
+
+</html>
