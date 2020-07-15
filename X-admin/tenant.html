@@ -55,20 +55,7 @@
                     </div>
                     <div class="layui-card-body ">
                         <table class="layui-table" id='tenant' lay-filter="tenant">
-                            <!-- <thead>
-                                <tr>
-                                    <th lay-data="{type:'checkbox'}" onclick="">ID</th>
-                                    <th lay-data="{field:'id', width:80, sort: true}">id</th>
-                                    <th lay-data="{field:'name', width:100, edit: 'text', sort: true}">姓名</th>
-                                    <th lay-data="{field:'sex', width:100, edit: 'text'}">性别</th>
-                                    <th lay-data="{field:'sex', width:100, templet: '#switchTpl'}">性别</th>
-                                    <th lay-data="{field:'identity', width:100, edit: 'text', sort: true}">身份证号</th>
-                                    <th lay-data="{field:'nationality', width:80,edit: 'text', sort: true}">国籍</th>
-                                    <th lay-data="{field:'image', width:100}">image</th>
-                                    <th lay-data="{fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}">
-                                    </th>
-                                </tr>
-                            </thead> -->
+
                         </table>
                     </div>
                 </div>
@@ -82,29 +69,15 @@
         <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
         <button class="layui-btn layui-btn-sm" lay-event="isAll"> 验证是否全选</button>
         <button class="layui-btn" onclick="xadmin.open('添加房客','./tenant_add.html',600,400)"><i class="layui-icon"></i>添加</button>
-        <<button class="layui-btn" lay-event="delete">
-            <i class="layui-icon"></i>删除
-        </button>
     </div>
 </script>
-<script type="text/html" id="switchTpl">
-<input type="checkbox" name="sex" value="{{d.sex}}" lay-skin="switch" lay-text="女|男" lay-filter="sex_cb"
-    {{ d.sex == '女' ? 'checked': ''}}>
-</script>
+
 <script type="text/html" id="barDemo">
-    <!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a> -->
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
   </script>
 
-<script>
-    layui.use('form',
-        function () {
-
-
-        }
-    );
-</script>
 <script>
     layui.use(['table', 'form'],
         function () {
@@ -112,7 +85,7 @@
             var form = layui.form;
             var tableIns = table.render({
                 elem: "#tenant",
-                url: './tenant.json',
+                url: 'http://127.0.0.1:8080/api/tenants',
                 page: true,
                 toolbar: '#toolbarDemo',
                 id: 'tenant',
@@ -128,20 +101,17 @@
                 cols: [[
                     { type: "checkbox", title: "ID" },
                     { field: 'id', width: 80, sort: true, title: "id" },
-                    { field: 'name', width: 100, edit: 'text', sort: true, title: "姓名" },
-                    {
-                        field: 'sex', width: 100,
-                        templet: "#switchTpl",
-                        title: "性别"
-                    },
-                    { field: 'identity', width: 100, edit: 'text', sort: true, title: "身份证号" },
+                    { field: 'name', width: 100, sort: true, title: "姓名" },
+                    { field: 'sex', width: 100, title: "性别" },
+                    { field: 'identity', width: 200, sort: true, title: "身份证号" },
                     { field: 'nationality', width: 80, edit: 'text', sort: true, title: "国籍" },
                     { field: 'image', width: 100, title: "image" },
+                    { fixed: 'right', width: 200, align: 'center', toolbar: '#barDemo' }
                 ]],
                 text: {
                     none: '暂未查询到相关数据'
                 }
-            })
+            });
 
             //监听单元格编辑
             table.on('edit(tenant)',
@@ -157,20 +127,57 @@
 
                 });
 
-            //     //监听工具条
-            // table.on('tool(tenant)', function (obj) {
-            //     var data = obj.data;
-            //     if (obj.event === 'detail') {
-            //         layer.msg('ID：' + data.id + ' 的查看操作');
-            //     } else if (obj.event === 'del') {
-            //         layer.confirm('真的删除行么', function (index) {
-            //             obj.del();
-            //             layer.close(index);
-            //         });
-            //     } else if (obj.event === 'edit') {
-            //         layer.alert('编辑行：<br>' + JSON.stringify(data))
-            //     }
-            // });
+            //监听工具条
+            table.on('tool(tenant)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'detail') {
+                    layer.msg('ID：' + data.id + ' 的查看操作');
+                } else if (obj.event === 'del') {
+                    var delete_id = Number(obj.data.id);
+
+                    layer.confirm('真的删除吗？' + delete_id, function (index) {
+                        $.ajax({
+                            type: "delete",
+                            async: true,
+                            url: "http://127.0.0.1:8080/api/tenant",
+                            data: {
+                                "id": delete_id
+                            },
+                            
+                            success: function (result) {
+                                if (result.code == 200) {
+                                    layer.msg('删除成功', { icon: 1, time: 1000 });
+                                    $(".layui-laypage-btn").click();  //模拟点击,刷新当前页
+                                }
+                                else {
+                                    layer.msg('删除失败,请稍后再试!', { icon: 2, time: 1000 });
+                                }
+                            },
+                            error: function (errorMsg) {
+                                layer.msg('请求失败，请稍后再试!', { icon: 2, time: 1000 });
+                            }
+                        })
+
+                        obj.del();
+                        layer.close(index);
+                    });
+                } else if (obj.event === 'edit') {
+                    // layer.alert('编辑行：<br>' + JSON.stringify(data))
+                    layer.open({
+                        type: 2,
+                        area: ['600px', '500px'],
+                        fix: false, //不固定
+                        maxmin: true,
+                        shade: 0.6,
+                        title: '修改房客信息',
+                        content: 'tenant_edit.html',
+                        success: function (layero, index) {
+                            var iframeWin = window[layero.find('iframe')[0]['name']];
+                            iframeWin.init(data);
+                        }
+                    });
+                }
+            });
 
             //头工具栏事件
             table.on('toolbar(tenant)',

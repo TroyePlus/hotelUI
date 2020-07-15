@@ -53,37 +53,8 @@
                         </form>
                     </div>
                     <div class="layui-card-body ">
-                        <table class="layui-table"
-                            lay-data="{url:'./roomtype.json',page:true,toolbar: '#toolbarDemo',id:'test'}"
-                            lay-filter="test">
-                            <thead>
-                                <tr>
-                                    <th lay-data="{type:'checkbox'}">ID</th>
-                                    <th lay-data="{field:'id', width:80, sort: true}">ID</th>
-                                    <th lay-data="{field:'price', width:100, sort: true}">价格</th>
-                                    <th lay-data="{field:'numOfPerson', width:100, sort: true}">人数</th>
-                                    <th lay-data="{field:'numOfBed', width:100}">numOfBed</th>
-                                    <th lay-data="{field:'totalQuantity', width:100}">totalQuantity</th>
-                                    <th lay-data="{field:'airConditioner', width:100}">airConditioner</th>
-                                    <th lay-data="{field:'lengthOfBed', width:100}">lengthOfBed</th>
-                                    <th lay-data="{field:'widthOfBed', width:100}">widthOfBed</th>
-                                    <th lay-data="{field:'remainingQuantity', width:100}">remainingQuantity</th>
-                                    <th lay-data="{field:'roomService', width:100}">roomService</th>
-                                    <th lay-data="{field:'internet', width:100}">internet</th>
-                                    <th lay-data="{field:'hasBreakfast', width:100}">hasBreakfast</th>
-                                    <th lay-data="{field:'hasReserve', width:100}">hasReserve</th>
-                                    <th lay-data="{field:'hasDiscount', width:100}">hasDiscount</th>
-                                    <!-- <th lay-data="{type:'checkbox'}">ID</th>
-                                    <th lay-data="{field:'id', width:80, sort: true}">ID</th>
-                                    <th lay-data="{field:'username', width:120, sort: true, edit: 'text'}">用户名</th>
-                                    <th lay-data="{field:'email', edit: 'text', minWidth: 150}">邮箱</th>
-                                    <th lay-data="{field:'sex', width:80,templet: '#switchTpl'}">性别</th>
-                                    <th lay-data="{field:'city', edit: 'text', minWidth: 100}">城市</th>
-                                    <th lay-data="{field:'experience', sort: true, edit: 'text'}">积分</th>
-                                    <th lay-data="{field:'dw_xinzhi',templet: function(d){ return d.dw_xinzhi.titel;}}">
-                                        学校</th> -->
-                                </tr>
-                            </thead>
+                        <table class="layui-table" id="roomtype" lay-filter="roomtype">
+
                         </table>
                     </div>
                 </div>
@@ -96,12 +67,13 @@
         <button class="layui-btn layui-btn-sm" lay-event="getCheckData"> 获取选中行数据 </button>
         <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
         <button class="layui-btn layui-btn-sm" lay-event="isAll"> 验证是否全选</button>
+        <button class="layui-btn" onclick="xadmin.open('添加房间类型','./roomtype_add.html',600,400)"><i class="layui-icon"></i>添加</button>
     </div>
 </script>
-<script type="text/html" id="switchTpl">
-    <!-- 这里的checked的状态只是演示 -->
-<input type="checkbox" name="sex" value="{{d.sex}}" lay-skin="switch" lay-text="女|男" lay-filter="sexDemo"
-    {{ d.sex == "男" ? 'checked': ''}}>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script>
     layui.use('laydate',
@@ -121,12 +93,52 @@
         });
 </script>
 <script>
-    layui.use('table',
+    layui.use(['table', 'form'],
         function () {
             var table = layui.table;
+            var form = layui.form;
+
+            var tableIns = table.render({
+                elem: "#roomtype",
+                url: 'http://127.0.0.1:8080/api/roomtypes',
+                page: true,
+                toolbar: '#toolbarDemo',
+                id: 'roomtype',
+                method: "get",
+                parseData: function (res) {
+                    return {
+                        "code": 0,
+                        "msg": res.msg,
+                        "count": res.data.length,
+                        "data": res.data
+                    };
+                },
+                cols: [[
+                    { type: 'checkbox', title: "ID" },
+                    { field: 'id', width: 80, sort: true, title: "ID" },
+                    { field: 'name', width: 80, sort: true, title: "name" },
+                    { field: 'price', width: 100, sort: true, title: "价格" },
+                    { field: 'numOfPerson', width: 100, sort: true, title: "人数" },
+                    { field: 'numOfBed', width: 100, title: "numOfBed" },
+                    { field: 'totalQuantity', width: 100, title: "totalQuantity" },
+                    { field: 'airConditioner', width: 100, title: "airConditioner" },
+                    { field: 'lengthOfBed', width: 100, title: "lengthOfBed" },
+                    { field: 'widthOfBed', width: 100, title: "widthOfBed" },
+                    { field: 'remainingQuantity', width: 100, title: "remainingQuantity" },
+                    { field: 'roomService', width: 100, title: "roomService" },
+                    { field: 'internet', width: 100, title: "internet" },
+                    { field: 'hasBreakfast', width: 100, title: "hasBreakfast" },
+                    { field: 'hasReserve', width: 100, title: "hasReserve" },
+                    { field: 'hasDiscount', width: 100, title: "hasDiscount" },
+                    { fixed: 'right', width: 200, align: 'center', toolbar: '#barDemo' }
+                ]],
+                text: {
+                    none: '暂未查询到相关数据'
+                }
+            });
 
             //监听单元格编辑
-            table.on('edit(test)',
+            table.on('edit(roomtype)',
                 function (obj) {
                     var value = obj.value //得到修改后的值
                         ,
@@ -136,8 +148,60 @@
                     layer.msg('[ID: ' + data.id + '] ' + field + ' 字段更改为：' + value);
                 });
 
+            //监听工具条
+            table.on('tool(roomtype)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'detail') {
+                    layer.msg('ID：' + data.id + ' 的查看操作');
+                } else if (obj.event === 'del') {
+                    var delete_id = Number(obj.data.id);
+
+                    layer.confirm('真的删除吗？' + delete_id, function (index) {
+                        $.ajax({
+                            type: "delete",
+                            async: true,
+                            url: "http://127.0.0.1:8080/api/baseinfo/RoomType",
+                            data: {
+                                "id": delete_id
+                            },
+                            
+                            success: function (result) {
+                                if (result.code == 200) {
+                                    layer.msg('删除成功', { icon: 1, time: 1000 });
+                                    $(".layui-laypage-btn").click();  //模拟点击,刷新当前页
+                                }
+                                else {
+                                    layer.msg('删除失败,请稍后再试!', { icon: 2, time: 1000 });
+                                }
+                            },
+                            error: function (errorMsg) {
+                                layer.msg('请求失败，请稍后再试!', { icon: 2, time: 1000 });
+                            }
+                        })
+
+                        obj.del();
+                        layer.close(index);
+                    });
+                } else if (obj.event === 'edit') {
+                    // layer.alert('编辑行：<br>' + JSON.stringify(data))
+                    layer.open({
+                        type: 2,
+                        area: ['600px', '500px'],
+                        fix: false, //不固定
+                        maxmin: true,
+                        shade: 0.6,
+                        title: '修改房间类型',
+                        content: 'roomtype_edit.html',
+                        success: function (layero, index) {
+                            var iframeWin = window[layero.find('iframe')[0]['name']];
+                            iframeWin.init(data);
+                        }
+                    });
+                }
+            });
+
             //头工具栏事件
-            table.on('toolbar(test)',
+            table.on('toolbar(roomtype)',
                 function (obj) {
                     var checkStatus = table.checkStatus(obj.config.id);
                     switch (obj.event) {
