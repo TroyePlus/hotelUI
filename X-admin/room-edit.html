@@ -124,6 +124,7 @@
                 form.render('radio')
 
                 $('#roomId').val(data.roomId);
+                $('#roomId').readyOnly=true;
 
                 //监听提交
                 form.on('submit(save)',

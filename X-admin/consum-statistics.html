@@ -51,13 +51,14 @@
                         </div>
                         <div class="layui-card-body" style="min-height: 560px;">
                             <div class="layui-col-sm12" style="height: 600px;">
-                                <div class="layui-carousel" id="best">
+                                <!-- <div class="layui-carousel" id="best">
                                     <div carousel-item>
                                       <div><img src="images/cola.jpg"></div>
                                       <div><img src="images/chips.jpg"></div>
                                       <div><img src="images/beer.jpg"></div>
                                     </div>
-                                  </div>
+                                  </div> -->
+                                  <div id="show_day"></div>
                             </div>
                         </div>
                     </div>
@@ -91,10 +92,18 @@
                 </div> -->
             </div>
         </div>
-        </div>
     
         <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
         <script type="text/javascript">
+        $.get('/api/consumption/day',function (result){
+            var day = $('#show_day');
+            var data = result.data;
+            console.log(data);
+            var img = '<img alt="Best" src="'+data[0].path+'"/>';
+            day.html(img);
+        });
+
+
         // 基于准备好的dom，初始化echarts实例
         var myChart1 = echarts.init(document.getElementById('main1'));
 
@@ -211,16 +220,16 @@
         });
 
 
-        layui.use('carousel', function(){
-        var carousel = layui.carousel;
-        //建造实例
-        carousel.render({
-            elem: '#best'
-            ,width: '100%' //设置容器宽度
-            ,arrow: 'hover' //悬停显示箭头
-            ,height: '400px'
-        });
-        });
+        // layui.use('carousel', function(){
+        // var carousel = layui.carousel;
+        // //建造实例
+        // carousel.render({
+        //     elem: '#best'
+        //     ,width: '100%' //设置容器宽度
+        //     ,arrow: 'hover' //悬停显示箭头
+        //     ,height: '400px'
+        // });
+        // });
     </script>
     </body>
 </html>
