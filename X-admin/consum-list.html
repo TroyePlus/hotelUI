@@ -118,10 +118,10 @@
       , cols: [
         [
           { checkbox: true, fixed: true, align: 'center' }
-          , { field: 'consumptionId', title: '消费单号', unresize: true, width: 120, sort: true }
-          , { field: 'stayId', title: '入住单号', unresize: true, width: 120, sort: true }
+          , { field: 'consumptionId', title: '消费单号', unresize: true, width: 100, sort: true }
+          , { field: 'stayId', title: '入住单号', unresize: true, width: 100, sort: true }
           , {
-            field: 'd.tenant.id', title: '房客ID', unresize: true, width: 130,
+            field: 'd.tenant.id', title: '房客ID', unresize: true, width: 100,
             templet: '<div>{{d.tenant.id}}</div>'
           }
           , {
@@ -200,7 +200,7 @@
         area: ['600px', '500px'],
         fix: false, //不固定
         maxmin: true,
-        shade: 0.8,
+        shade: 0.6,
         title: '修改客房信息',
         content: 'consum-edit.html',
         success: function (layero, index) {
@@ -221,7 +221,7 @@
         area: ['600px', '500px'],
         fix: false, //不固定
         maxmin: true,
-        shade: 0.8,
+        shade: 0.6,
         title: '添加客房',
         content: 'consum-add.html',
         success: function (layero, index) {
