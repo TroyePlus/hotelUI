@@ -54,20 +54,21 @@
                         </form>
                     </div>
                     <div class="layui-card-body ">
-                        <table class="layui-table"
-                        lay-data="{url:'./tenant.json', page:true,toolbar: '#toolbarDemo',id:'test'}" id='tenant' lay-filter="tenant">
-                            <thead>
+                        <table class="layui-table" id='tenant' lay-filter="tenant">
+                            <!-- <thead>
                                 <tr>
                                     <th lay-data="{type:'checkbox'}" onclick="">ID</th>
                                     <th lay-data="{field:'id', width:80, sort: true}">id</th>
                                     <th lay-data="{field:'name', width:100, edit: 'text', sort: true}">姓名</th>
                                     <th lay-data="{field:'sex', width:100, edit: 'text'}">性别</th>
-                                    <!-- <th lay-data="{field:'sex', width:100, templet: '#switchTpl'}">性别</th> -->
+                                    <th lay-data="{field:'sex', width:100, templet: '#switchTpl'}">性别</th>
                                     <th lay-data="{field:'identity', width:100, edit: 'text', sort: true}">身份证号</th>
                                     <th lay-data="{field:'nationality', width:80,edit: 'text', sort: true}">国籍</th>
                                     <th lay-data="{field:'image', width:100}">image</th>
+                                    <th lay-data="{fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}">
+                                    </th>
                                 </tr>
-                            </thead>
+                            </thead> -->
                         </table>
                     </div>
                 </div>
@@ -89,51 +90,58 @@
 <script type="text/html" id="switchTpl">
 <input type="checkbox" name="sex" value="{{d.sex}}" lay-skin="switch" lay-text="女|男" lay-filter="sex_cb"
     {{ d.sex == '女' ? 'checked': ''}}>
-    
 </script>
+<script type="text/html" id="barDemo">
+    <!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a> -->
+  </script>
 
 <script>
     layui.use('form',
         function () {
-            var form = layui.form;
-            form.on('checkbox(sex_cb)', function (data) {
-                layer.msg(JSON.stringify(data.field));
-                return false;
-            });
+
 
         }
     );
 </script>
 <script>
-    layui.use('table',
+    layui.use(['table', 'form'],
         function () {
             var table = layui.table;
-
-            // var tableIns = table.render({
-            //     elem: "#tenant",
-            //     url: './tenant.json',
-            //     page: true,
-            //     toolbar: '#toolbarDemo',
-            //     id: 'tenant',
-            //     method: "get",
-            //     cols: [[
-            //         { type: "checkbox", title: "ID" },
-            //         { field: 'id', width: 80, sort: true, title: "id" },
-            //         { field: 'name', width: 100, edit: 'text', sort: true, title: "姓名" },
-            //         {
-            //             field: 'sex', width: 100,
-            //             templet: "#switchTpl",
-            //             title: "性别"
-            //         },
-            //         { field: 'identity', width: 100, edit: 'text', sort: true, title: "身份证号" },
-            //         { field: 'nationality', width: 80, edit: 'text', sort: true, title: "国籍" },
-            //         { field: 'image', width: 100, title: "image" },
-            //     ]],
-            //     done: function (res, curr, count) {
-            //         var tabledata = res.data;
-            //         layui.msg(tabledata);
-            //     }
-            // })
+            var form = layui.form;
+            var tableIns = table.render({
+                elem: "#tenant",
+                url: './tenant.json',
+                page: true,
+                toolbar: '#toolbarDemo',
+                id: 'tenant',
+                method: "get",
+                parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                    return {
+                        "code": 0, //解析接口状态
+                        "msg": res.msg, //解析提示文本
+                        "count": res.count, //解析数据长度
+                        "data": res.data //解析数据列表
+                    }
+                },
+                cols: [[
+                    { type: "checkbox", title: "ID" },
+                    { field: 'id', width: 80, sort: true, title: "id" },
+                    { field: 'name', width: 100, edit: 'text', sort: true, title: "姓名" },
+                    {
+                        field: 'sex', width: 100,
+                        templet: "#switchTpl",
+                        title: "性别"
+                    },
+                    { field: 'identity', width: 100, edit: 'text', sort: true, title: "身份证号" },
+                    { field: 'nationality', width: 80, edit: 'text', sort: true, title: "国籍" },
+                    { field: 'image', width: 100, title: "image" },
+                ]],
+                text: {
+                    none: '暂未查询到相关数据'
+                }
+            })
 
             //监听单元格编辑
             table.on('edit(tenant)',
@@ -148,6 +156,21 @@
                     //ajax
 
                 });
+
+            //     //监听工具条
+            // table.on('tool(tenant)', function (obj) {
+            //     var data = obj.data;
+            //     if (obj.event === 'detail') {
+            //         layer.msg('ID：' + data.id + ' 的查看操作');
+            //     } else if (obj.event === 'del') {
+            //         layer.confirm('真的删除行么', function (index) {
+            //             obj.del();
+            //             layer.close(index);
+            //         });
+            //     } else if (obj.event === 'edit') {
+            //         layer.alert('编辑行：<br>' + JSON.stringify(data))
+            //     }
+            // });
 
             //头工具栏事件
             table.on('toolbar(tenant)',
@@ -169,6 +192,13 @@
                             break;
                     };
                 });
+
+
+            form.on('checkbox(sex_cb)', function (obj) {
+                layer.msg(JSON.stringify(obj));
+                return false;
+            });
+
         });
 </script>
 <script>
