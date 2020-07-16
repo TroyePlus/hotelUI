@@ -151,12 +151,14 @@ layui.use(['laypage','laydate', 'form', 'table'],
     var data = obj.data;
     switch(obj.event){
       case 'del':
-          console.log(data.id)
-          var deldata = {ids:null}
+      layer.confirm('真的删除行么', function(index){
+        var deldata = {ids:null}
           deldata.ids = data.id;
+        obj.del();
+        layer.close(index);
           delLog(deldata);
-          //表格里面也得删除
-
+      });
+          
       break;
     }
   });
@@ -166,12 +168,26 @@ layui.use(['laypage','laydate', 'form', 'table'],
     switch(obj.event){
       case 'DelAll':
         var data = checkStatus.data;
-        layer.alert(JSON.stringify(data));
         var deldata = {ids:''}
         for(let i = 0;i < data.length;i++){
             deldata.ids += `${data[i].id},`
         }
-        console.log(deldata.ids)
+        // console.log(deldata.ids)
+        if (data.length > 0)
+     {
+         layer.confirm('确定删除吗？',{icon:3, title:'提示信息'}, function (index) {
+             $("div.layui-table-body table tbody input[name='layTableCheckbox']:checked").each(function () {
+             n = $(this).parents("tbody tr").index(); 
+             $("div.layui-table-body table tbody ").find("tr:eq(" + n + ")").remove();
+             $("div.layui-table-header table thead div.layui-unselect.layui-form-checkbox").removeClass("layui-form-checked");
+           });
+            layer.close(index);
+            ayer.msg('已删除');
+           });
+       } else
+           {
+              layer.msg("请选择需要删除的数据")
+           }
         delLog(deldata)
       break;
     };
