@@ -116,20 +116,50 @@
                 cols: [[
                     { type: 'checkbox', title: "ID" },
                     { field: 'id', width: 80, sort: true, title: "ID" },
-                    { field: 'name', width: 80, sort: true, title: "name" },
+                    { field: 'name', width: 80, sort: true, title: "房间名称" },
                     { field: 'price', width: 100, sort: true, title: "价格" },
-                    { field: 'numOfPerson', width: 100, sort: true, title: "人数" },
-                    { field: 'numOfBed', width: 100, title: "numOfBed" },
-                    { field: 'totalQuantity', width: 100, title: "totalQuantity" },
-                    { field: 'airConditioner', width: 100, title: "airConditioner" },
-                    { field: 'lengthOfBed', width: 100, title: "lengthOfBed" },
-                    { field: 'widthOfBed', width: 100, title: "widthOfBed" },
-                    { field: 'remainingQuantity', width: 100, title: "remainingQuantity" },
-                    { field: 'roomService', width: 100, title: "roomService" },
-                    { field: 'internet', width: 100, title: "internet" },
-                    { field: 'hasBreakfast', width: 100, title: "hasBreakfast" },
-                    { field: 'hasReserve', width: 100, title: "hasReserve" },
-                    { field: 'hasDiscount', width: 100, title: "hasDiscount" },
+                    { field: 'numOfPerson', width: 100, sort: true, title: "入住人数" },
+                    { field: 'numOfBed', width: 100, title: "床铺数" },
+                    { field: 'totalQuantity', width: 100, title: "房间数量" },
+                    { field: 'lengthOfBed', width: 100, title: "床铺长度" },
+                    { field: 'widthOfBed', width: 100, title: "床铺宽度" },
+                    { field: 'remainingQuantity', width: 100, title: "剩余数量" },
+                    {
+                        field: 'airConditioner', width: 100, title: "空调",
+                        templet: function (d) {
+                            return { "Y": "有", "N": "无", "有": "有", "无":"无" }[d.airConditioner];
+                        }
+                    },
+                    {
+                        field: 'roomService', width: 100, title: "客房服务",
+                        templet: function (d) {
+                            return { "Y": "有", "N": "无", "有": "有", "无":"无" }[d.roomService];
+                        }
+                    },
+                    {
+                        field: 'internet', width: 100, title: "网络",
+                        templet: function (d) {
+                            return { "Y": "有", "N": "无", "有": "有", "无":"无" }[d.internet];
+                        }
+                    },
+                    {
+                        field: 'hasBreakfast', width: 100, title: "早餐",
+                        templet: function (d) {
+                            return { "Y": "有", "N": "无", "有": "有", "无":"无" }[d.hasBreakfast];
+                        }
+                    },
+                    {
+                        field: 'hasReserve', width: 100, title: "预约",
+                        templet: function (d) {
+                            return { "Y": "有", "N": "无", "有": "有", "无":"无" }[d.hasReserve];
+                        }
+                    },
+                    {
+                        field: 'hasDiscount', width: 100, title: "折扣",
+                        templet: function (d) {
+                            return { "Y": "有", "N": "无", "有": "有", "无":"无" }[d.hasDiscount];
+                        }
+                    },
                     { fixed: 'right', width: 200, align: 'center', toolbar: '#barDemo' }
                 ]],
                 text: {
@@ -164,7 +194,7 @@
                             data: {
                                 "id": delete_id
                             },
-                            
+
                             success: function (result) {
                                 if (result.code == 200) {
                                     layer.msg('删除成功', { icon: 1, time: 1000 });
