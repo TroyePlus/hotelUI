@@ -127,11 +127,11 @@
             data: []
         });
 
-        $.get('/api/commodities', function (result) {
-            demo1.update({
-                data: result.data
-            });
-        },'json');
+        // $.get('/api/commodities', function (result) {
+        //     demo1.update({
+        //         data: result.data
+        //     });
+        // },'json');
 
         function init(data) {
             layui.use(['form', 'layer', 'laydate'],
@@ -141,9 +141,12 @@
                         laydate = layui.laydate;
 
                     //设置类型默认值
-                    demo1.update({
-                        initValue: [data.commodity.id]
-                    });
+                    $.get('/api/commodities', function (result) {
+                        demo1.update({
+                            data: result.data,
+                            initValue: [data.commodity.id]
+                        });
+                    }, 'json');
 
                     laydate.render({
                         elem: '#date',
@@ -155,10 +158,10 @@
                     $('#tId').val(data.tenant.id);
                     $('#stayId').val(data.stayId);
                     $('#quantity').val(data.quantity);
-                    document.getElementById("conId").readOnly=true;
-                    document.getElementById("tId").readOnly=true;
-                    document.getElementById("stayId").readOnly=true;
-                    
+                    document.getElementById("conId").readOnly = true;
+                    document.getElementById("tId").readOnly = true;
+                    document.getElementById("stayId").readOnly = true;
+
 
                     //监听提交
                     form.on('submit(save)',

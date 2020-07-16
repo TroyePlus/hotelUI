@@ -102,12 +102,6 @@
         data: []
     });
 
-    //动态获取并更新下拉框
-    $.get('/api/roomtypes', function (result) {
-        demo1.update({
-            data: result.data
-        });
-    },'json');
 
     function init(data) {
         layui.use(['form', 'layer'],
@@ -116,10 +110,13 @@
                 var form = layui.form,
                     layer = layui.layer;
 
-                //设置类型默认值
-                demo1.update({
-                    initValue: [data.roomType.id]
-                });
+                //动态获取并更新下拉框并设置类型默认值
+                $.get('/api/roomtypes', function (result) {
+                    demo1.update({
+                        data: result.data,
+                        initValue: [data.roomType.id]
+                    });
+                },'json');
 
                 $('#floor').val(data.floor);
                 form.render('select');
