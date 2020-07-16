@@ -144,9 +144,9 @@
                                     if (result.code == 200) {
                                         parent.layui.table.reload('floor', { page: { curr: $(".layui-laypage-em").next().html() } });
                                         xadmin.close();
-                                        parent.layer.msg('添加成功!', { icon: 6, time: 1000 });
+                                        parent.layer.msg('修改成功!', { icon: 6, time: 1000 });
                                     } else {
-                                        layer.msg('添加失败，请稍后再试!', { icon: 5, time: 1000 });
+                                        layer.msg('修改失败，请稍后再试!', { icon: 5, time: 1000 });
                                     }
                                 },
                                 error: function (errorMsg) {
