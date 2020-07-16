@@ -10,12 +10,8 @@
     <link rel="stylesheet" href="./css/font.css">
     <link rel="stylesheet" href="./css/login.css">
 	  <link rel="stylesheet" href="./css/xadmin.css">
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
     <script src="./lib/layui/layui.js" charset="utf-8"></script>
-    <!--[if lt IE 9]>
-      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
 </head>
 <body class="login-bg">
     
@@ -37,30 +33,54 @@
         $(function  () {
             layui.use('form', function(){
               var form = layui.form;
-              // layer.msg('玩命卖萌中', function(){
-              //   //关闭后的操作
-              //   });
               //监听提交
               form.on('submit(login)', function(data){
-                // alert(888)
-                layer.msg(JSON.stringify(data.field),function(){
+                //提交
+                $.post('http://localhost:8080/api/session',data.field,function(res){
+                  console.log(res)
+                  cookieUtil.set("Authorization",res.message,"","http://localhost/api")
+                  console.log(cookieUtil.get("Authorization"))
+                  if(res.code == 200){
                     location.href='index.html'
+                  }else{
+                    layer.msg("密码错了",function(){
                 });
+                  }
+                })
                 return false;
               });
             });
         })
     </script>
-    <!-- 底部结束 -->
-    <!-- <script>
-    //百度统计可去掉
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-      var s = document.getElementsByTagName("script")[0]; 
-      s.parentNode.insertBefore(hm, s);
-    })();
-    </script> -->
+    <script>
+       var cookieUtil={
+      /*设置cookie*/
+    set:function(name,value){
+        var cookie=encodeURIComponent(name)+"="+encodeURIComponent(value);
+
+        document.cookie=cookie;
+    },
+    /*获取cookie*/
+    get:function(name){
+        var cookieName=encodeURIComponent(name);
+        /*正则表达式获取cookie*/
+        var restr="(^| )"+cookieName+"=([^;]*)(;|$)";
+        var reg=new RegExp(restr);
+        var cookieValue=document.cookie.match(reg)[2];
+        /*字符串截取cookie*/
+        /*var cookieStart=document.cookie.indexOf(cookieName+“=”);
+        var cookieValue=null;
+        if(cookieStart>-1){
+            var cookieEnd=document.cookie.indexOf(";",cookieStart);
+            if(cookieEnd==-1){
+                cookieEnd=document.cookie.length;
+            }
+            cookieValue=decodeURIComponent(document.cookie.substring(cookieStart
+            +cookieName.length,cookieEnd));
+        }*/
+        return cookieValue;
+    }
+}
+    </script>
 </body>
 </html>
