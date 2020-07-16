@@ -119,7 +119,7 @@
 
             var tableIns = table.render({
                 elem: "#roomtype",
-                url: 'http://127.0.0.1:8080/api/roomtypes',
+                url: 'http://127.0.0.1:8080/api/baseinfo/RoomType',
                 page: true,
                 toolbar: '#toolbarDemo',
                 id: 'roomtype',
@@ -219,6 +219,7 @@
                             headers: {
                                 Authorization: `Bearer ${cookieUtil.get("Authorization")}`
                             },
+                            dataType:"json",
 
                             success: function (result) {
                                 if (result.code == 200) {
