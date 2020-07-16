@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Layui</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
+  <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+  <script src="js/jquery.min.js" charset="utf-8"></script>
+  <link rel="stylesheet" href="css/xadmin.css"  media="all">
+</head>
+<style>
+    .layui-table-cell{
+    height:100px;
+    line-height: 100px;
+}
+</style>
+<body style="background-color: #e2e2e2">
+    <div class="layui-input-inline layui-show-xs-block">
+            <input type="text" id="id" name="id" placeholder="员工id" autocomplete="off" class="layui-input"></div>
+        <div class="layui-input-inline layui-show-xs-block">
+            <input type="text" id="name" name="name" placeholder="员工名" autocomplete="off" class="layui-input"></div>
+    <div class="layui-input-inline layui-show-xs-block">
+        <button class="layui-btn" lay-filter="sreach" onclick="SearchWorker()">
+            <i class="layui-icon">&#xe615;</i></button>
+    </div>
+ 
+    <div id="work" class="layui-row  layui-col-space25">
+    </div>
+              
+          
+<script src="lib/layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 --> 
+ 
+<script>
+
+var cookieUtil={
+      /*设置cookie*/
+    set:function(name,value){
+        var cookie=encodeURIComponent(name)+"="+encodeURIComponent(value);
+
+        document.cookie=cookie;
+    },
+    /*获取cookie*/
+    get:function(name){
+        var cookieName=encodeURIComponent(name);
+        /*正则表达式获取cookie*/
+        var restr="(^| )"+cookieName+"=([^;]*)(;|$)";
+        var reg=new RegExp(restr);
+        var cookieValue=document.cookie.match(reg)[2];
+        return cookieValue;
+    }
+}
+
+var getWorker = function(obj){
+    $.ajax({
+            type: "get",
+            url: 'http://localhost:8080/api/system/employee'
+            ,data:obj
+            ,xhrFields: {withCredentials: true},
+            headers:{
+                    Authorization:`Bearer ${cookieUtil.get("Authorization")}`
+            },
+            success: function (msg) {
+                var data = msg.data
+                var str = '';
+                for(let i = 0;i<data.length;i++){
+                    str += `<div class="layui-col-md4" >
+                                <div class="layui-card">
+                                    <div class="layui-card-header" style="height:150px" align="center">
+                                    <br/>
+                                        <i class="layui-icon layui-icon-username" style="margin-top:60px; font-size: 80px; color: #${data[i].sex=="F"? "ff99ff" : "3399ff"};"></i>
+                                    </div>
+                                    <div class="layui-card-body" align="center">
+                                        员工编号:${data[i].id}<br/>
+                                        姓名:${data[i].name}<br/>
+                                        性别:${data[i].sex=="M"?"男":"女"}<br/>
+                                        年龄:${data[i].age}<br/>
+                                        电话:${data[i].phone}<br/>
+                                        职位:${data[i].dept}<br/>
+                                    </div>
+                                </div>
+                            </div>`
+                }
+
+                document.getElementById('work').innerHTML = str
+            },
+            error: function (msg) {
+                console.log('请求报错！');
+            }
+        })
+}
+
+getWorker({});
+
+var SearchWorker = function(){
+                var name = document.getElementById('name').value;
+                var id = document.getElementById('id').value;
+                if(name == ''){
+                    name = null
+                }
+                if(name == ''){
+                    name = null;
+                }
+                getWorker({id,name})            
+        }
+  
+
+
+</script>
+
+</body>
+</html>
