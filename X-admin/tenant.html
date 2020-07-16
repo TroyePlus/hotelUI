@@ -35,7 +35,7 @@
         <div class="layui-row layui-col-space15">
             <div class="layui-col-md12">
                 <div class="layui-card">
-                    <div class="layui-card-body ">
+                    <!-- <div class="layui-card-body ">
                         <form class="layui-form layui-col-space5">
                             <div class="layui-inline layui-show-xs-block">
                                 <input class="layui-input" autocomplete="off" placeholder="身份证号" name="start"
@@ -52,7 +52,7 @@
                                     <i class="layui-icon">&#xe615;</i></button>
                             </div>
                         </form>
-                    </div>
+                    </div> -->
                     <div class="layui-card-body ">
                         <table class="layui-table" id='tenant' lay-filter="tenant">
 
@@ -125,7 +125,7 @@
                     { field: 'name', width: 100, sort: true, title: "姓名" },
                     { field: 'sex', width: 100, title: "性别", templet: function (d) { return { "m": "男", "f": "女" }[d.sex] } },
                     { field: 'identity', width: 200, sort: true, title: "身份证号" },
-                    { field: 'nationality', width: 80, edit: 'text', sort: true, title: "国籍" },
+                    { field: 'nationality', width: 80, sort: true, title: "国籍" },
                     { field: 'image', width: 100, title: "image" },
                     { fixed: 'right', width: 200, align: 'center', toolbar: '#barDemo' }
                 ]],
