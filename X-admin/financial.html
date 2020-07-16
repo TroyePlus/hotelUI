@@ -42,17 +42,7 @@
         var restr="(^| )"+cookieName+"=([^;]*)(;|$)";
         var reg=new RegExp(restr);
         var cookieValue=document.cookie.match(reg)[2];
-        /*字符串截取cookie*/
-        /*var cookieStart=document.cookie.indexOf(cookieName+“=”);
-        var cookieValue=null;
-        if(cookieStart>-1){
-            var cookieEnd=document.cookie.indexOf(";",cookieStart);
-            if(cookieEnd==-1){
-                cookieEnd=document.cookie.length;
-            }
-            cookieValue=decodeURIComponent(document.cookie.substring(cookieStart
-            +cookieName.length,cookieEnd));
-        }*/
+
         return cookieValue;
     }
 }
@@ -101,7 +91,10 @@ var getDay = function(str){
         });
 }
 
-getDay("2020-07-12")
+    var myDate = new Date();
+    var str = myDate.getFullYear() + '-0' + (myDate.getMonth()+1) + '-' +(myDate.getDay()+12);
+    console.log(str)
+getDay(str)
     
     
     </script>
@@ -134,8 +127,7 @@ getDay("2020-07-12")
 
         <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
         <script type="text/javascript">
-        var myDate = new Date();
-        var str = myDate.getFullYear() + '-' + (myDate.getMonth()+1);
+        
 
 var getmouth = function(str){
     $.ajax({
@@ -156,7 +148,7 @@ var getmouth = function(str){
             }
         });
 }
-getmouth(str);
+getmouth("2020-07");
         
 
 var chooseData = function(res){
