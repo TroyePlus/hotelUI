@@ -28,8 +28,8 @@
                         id
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="id" name="id" required="" lay-verify="required"
-                            autocomplete="off" class="layui-input" disabled>
+                        <input type="text" id="id" name="id" required="" lay-verify="required" autocomplete="off"
+                            class="layui-input" disabled>
                     </div>
                     <div class="layui-form-mid layui-word-aux">
                         ID
@@ -53,8 +53,8 @@
                     <label for="numOfPerson" class="layui-form-label">
                         <span class="x-red">*</span>入住人数</label>
                     <div class="layui-input-inline">
-                        <input type="text" id="numOfPerson" name="numOfPerson" required="required" lay-verify="numOfPerson"
-                            autocomplete="off" class="layui-input" value="testname"></div>
+                        <input type="text" id="numOfPerson" name="numOfPerson" required="required"
+                            lay-verify="numOfPerson" autocomplete="off" class="layui-input" value="testname"></div>
                 </div>
                 <div class="layui-form-item">
                     <label for="numOfBed" class="layui-form-label">
@@ -67,22 +67,22 @@
                     <label for="totalQuantity" class="layui-form-label">
                         <span class="x-red">*</span>房间数量</label>
                     <div class="layui-input-inline">
-                        <input type="text" id="totalQuantity" name="totalQuantity" required="required" lay-verify="totalQuantity"
-                            autocomplete="off" class="layui-input" value="testname"></div>
+                        <input type="text" id="totalQuantity" name="totalQuantity" required="required"
+                            lay-verify="totalQuantity" autocomplete="off" class="layui-input" value="testname"></div>
                 </div>
                 <div class="layui-form-item">
                     <label for="airConditioner" class="layui-form-label">
                         <span class="x-red">*</span>是否有空调</label>
                     <div class="layui-input-inline">
-                        <input type="text" id="airConditioner" name="airConditioner" required="required" lay-verify="airConditioner"
-                            autocomplete="off" class="layui-input" value="testname"></div>
+                        <input type="text" id="airConditioner" name="airConditioner" required="required"
+                            lay-verify="airConditioner" autocomplete="off" class="layui-input" value="testname"></div>
                 </div>
                 <div class="layui-form-item">
                     <label for="lengthOfBed" class="layui-form-label">
                         <span class="x-red">*</span>床铺长度</label>
                     <div class="layui-input-inline">
-                        <input type="text" id="lengthOfBed" name="lengthOfBed" required="required" lay-verify="lengthOfBed"
-                            autocomplete="off" class="layui-input" value="testname"></div>
+                        <input type="text" id="lengthOfBed" name="lengthOfBed" required="required"
+                            lay-verify="lengthOfBed" autocomplete="off" class="layui-input" value="testname"></div>
                 </div>
                 <div class="layui-form-item">
                     <label for="widthOfBed" class="layui-form-label">
@@ -95,15 +95,16 @@
                     <label for="remainingQuantity" class="layui-form-label">
                         <span class="x-red">*</span>剩余数量</label>
                     <div class="layui-input-inline">
-                        <input type="text" id="remainingQuantity" name="remainingQuantity" required="required" lay-verify="remainingQuantity"
-                            autocomplete="off" class="layui-input" value="testname"></div>
+                        <input type="text" id="remainingQuantity" name="remainingQuantity" required="required"
+                            lay-verify="remainingQuantity" autocomplete="off" class="layui-input" value="testname">
+                    </div>
                 </div>
                 <div class="layui-form-item">
                     <label for="roomService" class="layui-form-label">
                         <span class="x-red">*</span>客房服务</label>
                     <div class="layui-input-inline">
-                        <input type="text" id="roomService" name="roomService" required="required" lay-verify="roomService"
-                            autocomplete="off" class="layui-input" value="testname"></div>
+                        <input type="text" id="roomService" name="roomService" required="required"
+                            lay-verify="roomService" autocomplete="off" class="layui-input" value="testname"></div>
                 </div>
                 <div class="layui-form-item">
                     <label for="internet" class="layui-form-label">
@@ -116,8 +117,8 @@
                     <label for="hasBreakfast" class="layui-form-label">
                         <span class="x-red">*</span>早餐</label>
                     <div class="layui-input-inline">
-                        <input type="text" id="hasBreakfast" name="hasBreakfast" required="required" lay-verify="hasBreakfast"
-                            autocomplete="off" class="layui-input" value="testname"></div>
+                        <input type="text" id="hasBreakfast" name="hasBreakfast" required="required"
+                            lay-verify="hasBreakfast" autocomplete="off" class="layui-input" value="testname"></div>
                 </div>
                 <div class="layui-form-item">
                     <label for="hasReserve" class="layui-form-label">
@@ -130,11 +131,11 @@
                     <label for="hasDiscount" class="layui-form-label">
                         <span class="x-red">*</span>折扣</label>
                     <div class="layui-input-inline">
-                        <input type="text" id="hasDiscount" name="hasDiscount" required="required" lay-verify="hasDiscount"
-                            autocomplete="off" class="layui-input" value="testname"></div>
+                        <input type="text" id="hasDiscount" name="hasDiscount" required="required"
+                            lay-verify="hasDiscount" autocomplete="off" class="layui-input" value="testname"></div>
                 </div>
-                
-                
+
+
                 <div class="layui-form-item">
                     <label for="repass" class="layui-form-label"></label>
                     <button class="layui-btn" lay-filter="add" lay-submit="">修改</button></div>
@@ -157,6 +158,25 @@
                 }
             });
         });
+    </script>
+    <script>
+        var cookieUtil = {
+            /*设置cookie*/
+            set: function (name, value) {
+                var cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+                document.cookie = cookie;
+            },
+            /*获取cookie*/
+            get: function (name) {
+                var cookieName = encodeURIComponent(name);
+                /*正则表达式获取cookie*/
+                var restr = "(^| )" + cookieName + "=([^;]*)(;|$)";
+                var reg = new RegExp(restr);
+                var cookieValue = document.cookie.match(reg)[2];
+                return cookieValue;
+            }
+        }
     </script>
     <script>
         function init(data) {
@@ -205,14 +225,17 @@
                     form.on('submit(add)',
                         function (data) {
                             data.field.id = Number(data.field.id);
-                            alert(JSON.stringify(data.field) );
+                            alert(JSON.stringify(data.field));
                             //发异步，把数据提交给php
-                            var putdata=JSON.stringify(data.field);
+                            var putdata = JSON.stringify(data.field);
 
                             $.ajax({
                                 url: 'http://127.0.0.1:8080/api/baseinfo/RoomType',
                                 type: "put",
                                 data: putdata,
+                                headers: {
+                                    Authorization: `Bearer ${cookieUtil.get("Authorization")}`
+                                },
                                 contentType: "application/json;charset=utf-8",
                                 success: function (result) {
                                     if (result.code == 200) {
@@ -227,7 +250,7 @@
                                     console.log(errorMsg);
                                     layer.msg('请求失败，请稍后再试!', { icon: 5, time: 1000 });
                                 }
-                                
+
                             });
 
 

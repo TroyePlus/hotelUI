@@ -43,8 +43,8 @@
                     <label for="roomQuantity" class="layui-form-label">
                         <span class="x-red">*</span>房间数量</label>
                     <div class="layui-input-inline">
-                        <input type="text" id="roomQuantity" name="roomQuantity" required="required" lay-verify="roomQuantity"
-                            autocomplete="off" class="layui-input" value="0"></div>
+                        <input type="text" id="roomQuantity" name="roomQuantity" required="required"
+                            lay-verify="roomQuantity" autocomplete="off" class="layui-input" value="0"></div>
 
                 </div>
                 <div class="layui-form-item">
@@ -71,6 +71,25 @@
                     elem: '#cleanTime' //指定元素
                 });
             });
+    </script>
+    <script>
+        var cookieUtil = {
+            /*设置cookie*/
+            set: function (name, value) {
+                var cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+                document.cookie = cookie;
+            },
+            /*获取cookie*/
+            get: function (name) {
+                var cookieName = encodeURIComponent(name);
+                /*正则表达式获取cookie*/
+                var restr = "(^| )" + cookieName + "=([^;]*)(;|$)";
+                var reg = new RegExp(restr);
+                var cookieValue = document.cookie.match(reg)[2];
+                return cookieValue;
+            }
+        }
     </script>
     <script>
         function init(data) {
@@ -117,6 +136,9 @@
                                 url: 'http://127.0.0.1:8080/api/baseinfo/floor',
                                 type: "put",
                                 data: putdata,
+                                headers: {
+                                    Authorization: `Bearer ${cookieUtil.get("Authorization")}`
+                                },
                                 contentType: "application/json;charset=utf-8",
                                 success: function (result) {
                                     if (result.code == 200) {

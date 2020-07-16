@@ -53,10 +53,8 @@
                         </form>
                     </div>
                     <div class="layui-card-body ">
-                        <table class="layui-table"
-                        id="floor"
-                            lay-filter="floor">
-                            
+                        <table class="layui-table" id="floor" lay-filter="floor">
+
                         </table>
                     </div>
                 </div>
@@ -94,6 +92,25 @@
         });
 </script>
 <script>
+    var cookieUtil = {
+        /*设置cookie*/
+        set: function (name, value) {
+            var cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+            document.cookie = cookie;
+        },
+        /*获取cookie*/
+        get: function (name) {
+            var cookieName = encodeURIComponent(name);
+            /*正则表达式获取cookie*/
+            var restr = "(^| )" + cookieName + "=([^;]*)(;|$)";
+            var reg = new RegExp(restr);
+            var cookieValue = document.cookie.match(reg)[2];
+            return cookieValue;
+        }
+    }
+</script>
+<script>
     layui.use('table',
         function () {
             var table = layui.table;
@@ -105,6 +122,9 @@
                 toolbar: '#toolbarDemo',
                 id: 'floor',
                 method: "get",
+                headers: {
+                    Authorization: `Bearer ${cookieUtil.get("Authorization")}`
+                },
                 parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
                     return {
                         "code": 0, //解析接口状态
@@ -153,7 +173,7 @@
                     //         data: {
                     //             "id": delete_id
                     //         },
-                            
+
                     //         success: function (result) {
                     //             if (result.code == 200) {
                     //                 layer.msg('删除成功', { icon: 1, time: 1000 });

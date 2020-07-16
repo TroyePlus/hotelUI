@@ -93,6 +93,25 @@
         });
 </script>
 <script>
+    var cookieUtil = {
+        /*设置cookie*/
+        set: function (name, value) {
+            var cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+            document.cookie = cookie;
+        },
+        /*获取cookie*/
+        get: function (name) {
+            var cookieName = encodeURIComponent(name);
+            /*正则表达式获取cookie*/
+            var restr = "(^| )" + cookieName + "=([^;]*)(;|$)";
+            var reg = new RegExp(restr);
+            var cookieValue = document.cookie.match(reg)[2];
+            return cookieValue;
+        }
+    }
+</script>
+<script>
     layui.use(['table', 'form'],
         function () {
             var table = layui.table;
@@ -105,6 +124,9 @@
                 toolbar: '#toolbarDemo',
                 id: 'roomtype',
                 method: "get",
+                headers: {
+                    Authorization: `Bearer ${cookieUtil.get("Authorization")}`
+                },
                 parseData: function (res) {
                     return {
                         "code": 0,
@@ -127,37 +149,37 @@
                     {
                         field: 'airConditioner', width: 100, title: "空调",
                         templet: function (d) {
-                            return { "Y": "有", "N": "无", "有": "有", "无":"无" }[d.airConditioner];
+                            return { "Y": "有", "N": "无", "有": "有", "无": "无" }[d.airConditioner];
                         }
                     },
                     {
                         field: 'roomService', width: 100, title: "客房服务",
                         templet: function (d) {
-                            return { "Y": "有", "N": "无", "有": "有", "无":"无" }[d.roomService];
+                            return { "Y": "有", "N": "无", "有": "有", "无": "无" }[d.roomService];
                         }
                     },
                     {
                         field: 'internet', width: 100, title: "网络",
                         templet: function (d) {
-                            return { "Y": "有", "N": "无", "有": "有", "无":"无" }[d.internet];
+                            return { "Y": "有", "N": "无", "有": "有", "无": "无" }[d.internet];
                         }
                     },
                     {
                         field: 'hasBreakfast', width: 100, title: "早餐",
                         templet: function (d) {
-                            return { "Y": "有", "N": "无", "有": "有", "无":"无" }[d.hasBreakfast];
+                            return { "Y": "有", "N": "无", "有": "有", "无": "无" }[d.hasBreakfast];
                         }
                     },
                     {
                         field: 'hasReserve', width: 100, title: "预约",
                         templet: function (d) {
-                            return { "Y": "有", "N": "无", "有": "有", "无":"无" }[d.hasReserve];
+                            return { "Y": "有", "N": "无", "有": "有", "无": "无" }[d.hasReserve];
                         }
                     },
                     {
                         field: 'hasDiscount', width: 100, title: "折扣",
                         templet: function (d) {
-                            return { "Y": "有", "N": "无", "有": "有", "无":"无" }[d.hasDiscount];
+                            return { "Y": "有", "N": "无", "有": "有", "无": "无" }[d.hasDiscount];
                         }
                     },
                     { fixed: 'right', width: 200, align: 'center', toolbar: '#barDemo' }
@@ -193,6 +215,9 @@
                             url: "http://127.0.0.1:8080/api/baseinfo/RoomType",
                             data: {
                                 "id": delete_id
+                            },
+                            headers: {
+                                Authorization: `Bearer ${cookieUtil.get("Authorization")}`
                             },
 
                             success: function (result) {

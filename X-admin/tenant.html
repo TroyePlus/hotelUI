@@ -77,7 +77,25 @@
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
   </script>
+<script>
+    var cookieUtil = {
+        /*设置cookie*/
+        set: function (name, value) {
+            var cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
 
+            document.cookie = cookie;
+        },
+        /*获取cookie*/
+        get: function (name) {
+            var cookieName = encodeURIComponent(name);
+            /*正则表达式获取cookie*/
+            var restr = "(^| )" + cookieName + "=([^;]*)(;|$)";
+            var reg = new RegExp(restr);
+            var cookieValue = document.cookie.match(reg)[2];
+            return cookieValue;
+        }
+    }
+</script>
 <script>
     layui.use(['table', 'form'],
         function () {
@@ -90,6 +108,9 @@
                 toolbar: '#toolbarDemo',
                 id: 'tenant',
                 method: "get",
+                headers: {
+                    Authorization: `Bearer ${cookieUtil.get("Authorization")}`
+                },
                 parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
                     return {
                         "code": 0, //解析接口状态
@@ -102,7 +123,7 @@
                     { type: "checkbox", title: "ID" },
                     { field: 'id', width: 80, sort: true, title: "id" },
                     { field: 'name', width: 100, sort: true, title: "姓名" },
-                    { field: 'sex', width: 100, title: "性别" , templet: function(d) {return {"m":"男", "f":"女"}[d.sex]} },
+                    { field: 'sex', width: 100, title: "性别", templet: function (d) { return { "m": "男", "f": "女" }[d.sex] } },
                     { field: 'identity', width: 200, sort: true, title: "身份证号" },
                     { field: 'nationality', width: 80, edit: 'text', sort: true, title: "国籍" },
                     { field: 'image', width: 100, title: "image" },
@@ -143,7 +164,10 @@
                             data: {
                                 "id": delete_id
                             },
-                            
+                            headers: {
+                                Authorization: `Bearer ${cookieUtil.get("Authorization")}`
+                            },
+
                             success: function (result) {
                                 if (result.code == 200) {
                                     layer.msg('删除成功', { icon: 1, time: 1000 });

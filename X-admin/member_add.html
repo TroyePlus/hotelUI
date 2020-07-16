@@ -104,6 +104,25 @@
             });
     </script>
     <script>
+        var cookieUtil = {
+            /*设置cookie*/
+            set: function (name, value) {
+                var cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+                document.cookie = cookie;
+            },
+            /*获取cookie*/
+            get: function (name) {
+                var cookieName = encodeURIComponent(name);
+                /*正则表达式获取cookie*/
+                var restr = "(^| )" + cookieName + "=([^;]*)(;|$)";
+                var reg = new RegExp(restr);
+                var cookieValue = document.cookie.match(reg)[2];
+                return cookieValue;
+            }
+        }
+    </script>
+    <script>
         layui.use(['form', 'layer', 'jquery'],
             function () {
                 $ = layui.jquery;
@@ -141,6 +160,9 @@
                             url: 'http://127.0.0.1:8080/api/baseinfo/members',
                             type: "post",
                             data: putdata,
+                            headers: {
+                                Authorization: `Bearer ${cookieUtil.get("Authorization")}`
+                            },
                             contentType: "application/json;charset=utf-8",
                             success: function (result) {
                                 if (result.code == 200) {
