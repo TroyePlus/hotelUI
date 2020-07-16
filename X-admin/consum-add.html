@@ -137,7 +137,7 @@
             data: []
         });
 
-        $.get('/api/commodities', function (result) {
+        $.get('http://localhost:8080/api/commodities', function (result) {
             demo1.update({
                 data: result.data
             });
@@ -153,7 +153,7 @@
                     form.on('submit(add)',
                         function (data) {
                             //发异步，把数据提交给php
-                            $.post('/api/consumption', data.field, function (result) {
+                            $.post('http://localhost:8080/api/consumption', data.field, function (result) {
                                 if (result.code == 200) {
                                     parent.layui.table.reload('com_table', { page: { curr: $(".layui-laypage-em").next().html() } });
                                     xadmin.close();

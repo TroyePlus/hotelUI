@@ -130,7 +130,7 @@
 
     table.render({
       elem: '#table'
-      , url: '/api/consumptions' //数据接口
+      , url: 'http://localhost:8080/api/consumptions' //数据接口
       , method: 'get'
       , page: true //开启分页
       , id: 'com_table'
@@ -194,7 +194,7 @@
     //根据输入进行多条件模糊搜索,重新渲染表格
     function table_reload(obj) {
       table.reload('com_table', {
-        url: '/api/consumptions',
+        url: 'http://localhost:8080/api/consumptions',
         method: 'get',
         where: {
           "tenantId": obj.tId,
@@ -286,7 +286,7 @@
         $.ajax({
           type: "delete",
           async: true,
-          url: "/api/consumption",
+          url: "http://localhost:8080/api/consumption",
           data: {
             "consumptionIds": data
           },

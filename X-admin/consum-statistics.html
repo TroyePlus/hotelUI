@@ -121,7 +121,7 @@
             headers: { Authorization: `Bearer ${cookieUtil.get("Authorization")}` }
         });
 
-        $.get('/api/consumption/day', function (result) {
+        $.get('http://localhost:8080/api/consumption/day', function (result) {
             var day = $('#show_day');
             var data = result.data;
             console.log(data);
@@ -156,7 +156,7 @@
 
         myChart1.showLoading();
 
-        $.get('/api/consumption/week', function (result) {
+        $.get('http://localhost:8080/api/consumption/week', function (result) {
             var names = [];  //类别数组
             var values = [];
             if (result) {
@@ -204,7 +204,7 @@
 
         myChart2.showLoading();
 
-        $.get('/api/consumption/month', function (result) {
+        $.get('http://localhost:8080/api/consumption/month', function (result) {
             var names = [];  //类别数组
             var labels = [];
             if (result) {

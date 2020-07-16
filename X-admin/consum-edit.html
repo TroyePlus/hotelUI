@@ -154,7 +154,7 @@
                         laydate = layui.laydate;
 
                     //设置类型默认值
-                    $.get('/api/commodities', function (result) {
+                    $.get('http://localhost:8080/api/commodities', function (result) {
                         demo1.update({
                             data: result.data,
                             initValue: [data.commodity.id]
@@ -183,7 +183,7 @@
                             $.ajax({
                                 type: "put",
                                 async: true,
-                                url: "/api/consumption",
+                                url: "http://localhost:8080/api/consumption",
                                 data: putData,
                                 dataType: "json",
                                 success: function (result) {

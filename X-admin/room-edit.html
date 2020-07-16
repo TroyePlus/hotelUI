@@ -132,7 +132,7 @@
                         layer = layui.layer;
 
                     //动态获取并更新下拉框并设置类型默认值
-                    $.get('/api/roomtypes', function (result) {
+                    $.get('http://localhost:8080/api/roomtypes', function (result) {
                         demo1.update({
                             data: result.data,
                             initValue: [data.roomType.id]
@@ -155,7 +155,7 @@
                             $.ajax({
                                 type: "put",
                                 async: true,
-                                url: "/api/room",
+                                url: "http://localhost:8080/api/room",
                                 data: putData,
                                 dataType: "json",
                                 success: function (result) {

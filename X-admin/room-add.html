@@ -122,7 +122,7 @@
         });
 
         //动态获取并更新下拉框
-        $.get('/api/roomtypes', function (result) {
+        $.get('http://localhost:8080/api/roomtypes', function (result) {
             demo1.update({
                 data: result.data
             });
@@ -148,7 +148,7 @@
                         function (data) {
                             console.log(data);
                             //发异步，把数据提交给php
-                            $.post('/api/room', data.field, function (result) {
+                            $.post('http://localhost:8080/api/room', data.field, function (result) {
                                 if (result.code == 200) {
                                     //刷新父窗口表格的当前页
                                     parent.layui.table.reload('room_table', { page: { curr: $(".layui-laypage-em").next().html() } });

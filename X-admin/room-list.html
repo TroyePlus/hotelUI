@@ -138,7 +138,7 @@
       form = layui.form;
     table.render({
       elem: '#table'
-      , url: '/api/rooms' //数据接口
+      , url: 'http://localhost:8080/api/rooms' //数据接口
       , method: 'get'
       , page: true //开启分页
       , id: 'room_table'
@@ -195,7 +195,7 @@
 
     function table_reload(obj) {
       table.reload('room_table', {
-        url: '/api/rooms',
+        url: 'http://localhost:8080/api/rooms',
         method: 'get',
         where: {
           "roomId": obj.roomId,
@@ -238,7 +238,7 @@
         $.ajax({
           type: "patch",
           async: true,
-          url: "/api/room",
+          url: "http://localhost:8080/api/room",
           data: {
             "roomId": data.roomId,
             "status": status
@@ -354,7 +354,7 @@
         $.ajax({
           type: "delete",
           async: true,
-          url: "/api/room",
+          url: "http://localhost:8080/api/room",
           data: {
             "roomIds": data
           },
