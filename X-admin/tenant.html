@@ -102,7 +102,7 @@
                     { type: "checkbox", title: "ID" },
                     { field: 'id', width: 80, sort: true, title: "id" },
                     { field: 'name', width: 100, sort: true, title: "姓名" },
-                    { field: 'sex', width: 100, title: "性别" },
+                    { field: 'sex', width: 100, title: "性别" , templet: function(d) {return {"m":"男", "f":"女"}[d.sex]} },
                     { field: 'identity', width: 200, sort: true, title: "身份证号" },
                     { field: 'nationality', width: 80, edit: 'text', sort: true, title: "国籍" },
                     { field: 'image', width: 100, title: "image" },
