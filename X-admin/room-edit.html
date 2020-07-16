@@ -7,7 +7,7 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
-          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
     <link rel="stylesheet" href="./css/font.css">
     <link rel="stylesheet" href="./css/xadmin.css">
     <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
@@ -22,147 +22,168 @@
 </head>
 
 <body>
-<div class="layui-fluid">
-    <div class="layui-row">
-        <form class="layui-form" id="form">
-            <div class="layui-form-item">
-                <label class="layui-form-label">
-                    客房号
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="roomId" name="roomId" required="" lay-verify="required"
-                           autocomplete="off" class="layui-input">
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form class="layui-form" id="form">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        客房号
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="roomId" name="roomId" required="" lay-verify="required"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        <span class="x-red">*</span>客房的唯一ID
+                    </div>
                 </div>
-                <div class="layui-form-mid layui-word-aux">
-                    <span class="x-red">*</span>客房的唯一ID
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        楼层
+                    </label>
+                    <div class="layui-input-inline">
+                        <select name="floor" id="floor" lay-verify="required">
+                            <option value="">请选择</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        客房所在楼层
+                    </div>
                 </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">
-                    楼层
-                </label>
-                <div class="layui-input-inline">
-                    <select name="floor" id="floor" lay-verify="required">
-                        <option value="">请选择</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">类型</label>
+                    <div class="layui-input-inline">
+                        <div id="select"></div>
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        客房类型
+                    </div>
                 </div>
-                <div class="layui-form-mid layui-word-aux">
-                    客房所在楼层
+                <div class="layui-form-item">
+                    <label class="layui-form-label">状态</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="status" value="Y" title="可预订">
+                        <input type="radio" name="status" value="N" title="不可订">
+                    </div>
                 </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">类型</label>
-                <div class="layui-input-inline">
-                    <div id="select"></div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="save">保存</button>
+                        <button type="button" class="layui-btn layui-btn-primary" id="cancel">取消</button>
+                    </div>
                 </div>
-                <div class="layui-form-mid layui-word-aux">
-                    客房类型
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">状态</label>
-                <div class="layui-input-block">
-                    <input type="radio" name="status" value="Y" title="可预订">
-                    <input type="radio" name="status" value="N" title="不可订">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="save">保存</button>
-                    <button type="button" class="layui-btn layui-btn-primary" id="cancel">取消</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
-<script>
-    $(function () {
-        $.ajaxSetup({crossDomain: true, xhrFields: {withCredentials: true}});
-    });
+    <script>
+        var cookieUtil = {
+            /*设置cookie*/
+            set: function (name, value) {
+                var cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
 
-    var demo1 = xmSelect.render({
-        el: '#select',
-        name: 'typeId',
-        radio: true,
-        clickClose: true,
-        layVerify: 'required',
-        theme: {
-            color: '#1cbbb4',
-        },
-        tips: '选择类型',
-        prop: {
-            name: 'typeName',
-            value: 'typeId'
-        },
-        data: []
-    });
+                document.cookie = cookie;
+            },
+            /*获取cookie*/
+            get: function (name) {
+                var cookieName = encodeURIComponent(name);
+                /*正则表达式获取cookie*/
+                var restr = "(^| )" + cookieName + "=([^;]*)(;|$)";
+                var reg = new RegExp(restr);
+                var cookieValue = document.cookie.match(reg)[2];
+                return cookieValue;
+            }
+        }
 
-
-    function init(data) {
-        layui.use(['form', 'layer'],
-            function () {
-                $ = layui.jquery;
-                var form = layui.form,
-                    layer = layui.layer;
-
-                //动态获取并更新下拉框并设置类型默认值
-                $.get('/api/roomtypes', function (result) {
-                    demo1.update({
-                        data: result.data,
-                        initValue: [data.roomType.id]
-                    });
-                },'json');
-
-                $('#floor').val(data.floor);
-                form.render('select');
-                //初始化radio
-                $("input[name='status'][value='" + data.status + "']").attr("checked", true);
-                form.render('radio')
-
-                $('#roomId').val(data.roomId);
-                document.getElementById("roomId").readOnly=true;
-
-                //监听提交
-                form.on('submit(save)',
-                    function (data) {
-                        var putData = data.field;
-                        $.ajax({
-                            type: "put",
-                            async: true,
-                            url: "/api/room",
-                            data: putData,
-                            dataType: "json",
-                            success: function (result) {
-                                if (result.code == 200) {
-                                    parent.layui.table.reload('room_table', { page: { curr: $(".layui-laypage-em").next().html() } });
-                                    xadmin.close();
-                                    parent.layer.msg('修改成功!', { icon: 6, time: 1000 });
-                                }
-                                else {
-                                    layer.msg('修改失败，请稍后再试!', { icon: 5, time: 1000 });
-                                }
-                            },
-                            error: function (errorMsg) {
-                                console.log(errorMsg);
-                                layer.msg('请求失败，请稍后再试!', { icon: 5, time: 1000 });
-                            }
-                        });
-                        return false;
-                    });
-
-                $('#cancel').on('click', function () {
-                    xadmin.close();
-                    // var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-                    // parent.layer.close(index);  //关闭窗口
-                });
+        $(function () {
+            $.ajaxSetup({
+                crossDomain: true, xhrFields: { withCredentials: true },
+                headers: { Authorization: `Bearer ${cookieUtil.get("Authorization")}` }
             });
-    }
-</script>
+        });
+
+        var demo1 = xmSelect.render({
+            el: '#select',
+            name: 'typeId',
+            radio: true,
+            clickClose: true,
+            layVerify: 'required',
+            theme: {
+                color: '#1cbbb4',
+            },
+            tips: '选择类型',
+            prop: {
+                name: 'typeName',
+                value: 'typeId'
+            },
+            data: []
+        });
+
+
+        function init(data) {
+            layui.use(['form', 'layer'],
+                function () {
+                    $ = layui.jquery;
+                    var form = layui.form,
+                        layer = layui.layer;
+
+                    //动态获取并更新下拉框并设置类型默认值
+                    $.get('/api/roomtypes', function (result) {
+                        demo1.update({
+                            data: result.data,
+                            initValue: [data.roomType.id]
+                        });
+                    }, 'json');
+
+                    $('#floor').val(data.floor);
+                    form.render('select');
+                    //初始化radio
+                    $("input[name='status'][value='" + data.status + "']").attr("checked", true);
+                    form.render('radio')
+
+                    $('#roomId').val(data.roomId);
+                    document.getElementById("roomId").readOnly = true;
+
+                    //监听提交
+                    form.on('submit(save)',
+                        function (data) {
+                            var putData = data.field;
+                            $.ajax({
+                                type: "put",
+                                async: true,
+                                url: "/api/room",
+                                data: putData,
+                                dataType: "json",
+                                success: function (result) {
+                                    if (result.code == 200) {
+                                        parent.layui.table.reload('room_table', { page: { curr: $(".layui-laypage-em").next().html() } });
+                                        xadmin.close();
+                                        parent.layer.msg('修改成功!', { icon: 6, time: 1000 });
+                                    }
+                                    else {
+                                        layer.msg('修改失败，请稍后再试!', { icon: 5, time: 1000 });
+                                    }
+                                },
+                                error: function (errorMsg) {
+                                    console.log(errorMsg);
+                                    layer.msg('请求失败，请稍后再试!', { icon: 5, time: 1000 });
+                                }
+                            });
+                            return false;
+                        });
+
+                    $('#cancel').on('click', function () {
+                        xadmin.close();
+                        // var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                        // parent.layer.close(index);  //关闭窗口
+                    });
+                });
+        }
+    </script>
 </body>
 
 </html>

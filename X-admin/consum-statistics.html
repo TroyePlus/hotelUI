@@ -98,8 +98,27 @@
 
     <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
     <script type="text/javascript">
-        $(function () {
-            $.ajaxSetup({ crossDomain: true, xhrFields: { withCredentials: true } });
+        var cookieUtil = {
+            /*设置cookie*/
+            set: function (name, value) {
+                var cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+                document.cookie = cookie;
+            },
+            /*获取cookie*/
+            get: function (name) {
+                var cookieName = encodeURIComponent(name);
+                /*正则表达式获取cookie*/
+                var restr = "(^| )" + cookieName + "=([^;]*)(;|$)";
+                var reg = new RegExp(restr);
+                var cookieValue = document.cookie.match(reg)[2];
+                return cookieValue;
+            }
+        }
+
+        $.ajaxSetup({
+            crossDomain: true, xhrFields: { withCredentials: true },
+            headers: { Authorization: `Bearer ${cookieUtil.get("Authorization")}` }
         });
 
         $.get('/api/consumption/day', function (result) {
@@ -165,7 +184,7 @@
                     }]
                 });
             }
-        },'json').fail(function (errorMsg) {
+        }, 'json').fail(function (errorMsg) {
             myChart1.hideLoading();
         });
 
@@ -222,7 +241,7 @@
                     ]
                 });
             }
-        },'json').fail(function (errorMsg) {
+        }, 'json').fail(function (errorMsg) {
             myChart2.hideLoading();
         });
 

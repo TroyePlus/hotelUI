@@ -86,8 +86,29 @@
         </div>
     </div>
     <script>
+        var cookieUtil = {
+            /*设置cookie*/
+            set: function (name, value) {
+                var cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+                document.cookie = cookie;
+            },
+            /*获取cookie*/
+            get: function (name) {
+                var cookieName = encodeURIComponent(name);
+                /*正则表达式获取cookie*/
+                var restr = "(^| )" + cookieName + "=([^;]*)(;|$)";
+                var reg = new RegExp(restr);
+                var cookieValue = document.cookie.match(reg)[2];
+                return cookieValue;
+            }
+        }
+
         $(function () {
-            $.ajaxSetup({ crossDomain: true, xhrFields: { withCredentials: true } });
+            $.ajaxSetup({
+                crossDomain: true, xhrFields: { withCredentials: true },
+                headers: { Authorization: `Bearer ${cookieUtil.get("Authorization")}` }
+            });
         });
 
         layui.use('laydate', function () {
@@ -120,7 +141,7 @@
             demo1.update({
                 data: result.data
             });
-        },'json');
+        }, 'json');
 
         function init() {
             layui.use(['form', 'layer'],
