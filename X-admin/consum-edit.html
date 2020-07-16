@@ -30,8 +30,8 @@
                         消费单号
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="conId" name="consumptionId" required="" lay-verify="required" autocomplete="off"
-                            class="layui-input">
+                        <input type="text" id="conId" name="consumptionId" required="" lay-verify="required"
+                            autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">
                         房客消费的唯一ID
@@ -106,6 +106,9 @@
         //         trigger: 'click'
         //     });
         // });
+        $(function () {
+            $.ajaxSetup({ crossDomain: true, xhrFields: { withCredentials: true } });
+        });
 
         var demo1 = xmSelect.render({
             el: '#select',
@@ -126,12 +129,12 @@
 
         $.get('/api/commodities', function (result) {
             demo1.update({
-            data : result.data
-        });
-        });
+                data: result.data
+            });
+        },'json');
 
         function init(data) {
-            layui.use(['form', 'layer','laydate'],
+            layui.use(['form', 'layer', 'laydate'],
                 function () {
                     var form = layui.form,
                         layer = layui.layer,
@@ -146,12 +149,16 @@
                         elem: '#date',
                         trigger: 'click',
                         value: data.date
-                        });
+                    });
 
                     $('#conId').val(data.consumptionId);
                     $('#tId').val(data.tenant.id);
                     $('#stayId').val(data.stayId);
                     $('#quantity').val(data.quantity);
+                    document.getElementById("conId").readOnly=true;
+                    document.getElementById("tId").readOnly=true;
+                    document.getElementById("stayId").readOnly=true;
+                    
 
                     //监听提交
                     form.on('submit(save)',
@@ -163,15 +170,15 @@
                                 url: "/api/consumption",
                                 data: putData,
                                 dataType: "json",
-                                success: function (result){
+                                success: function (result) {
                                     if (result.code == 200) {
-                                    parent.layui.table.reload('com_table', { page: { curr: $(".layui-laypage-em").next().html() } });
-                                    xadmin.close();
-                                    parent.layer.msg('修改成功!', { icon: 6, time: 1000 });
-                                }
-                                else {
-                                    layer.msg('修改失败，请稍后再试!', { icon: 5, time: 1000 });
-                                }
+                                        parent.layui.table.reload('com_table', { page: { curr: $(".layui-laypage-em").next().html() } });
+                                        xadmin.close();
+                                        parent.layer.msg('修改成功!', { icon: 6, time: 1000 });
+                                    }
+                                    else {
+                                        layer.msg('修改失败，请稍后再试!', { icon: 5, time: 1000 });
+                                    }
                                 },
                                 error: function (errorMsg) {
                                     console.log(errorMsg);

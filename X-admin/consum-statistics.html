@@ -1,69 +1,72 @@
 <!DOCTYPE html>
 <html class="x-admin-sm">
-    <head>
-        <meta charset="UTF-8">
-        <title>消费统计</title>
-        <meta name="renderer" content="webkit">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
-        <link rel="stylesheet" href="./css/font.css">
-        <link rel="stylesheet" href="./css/xadmin.css">
-        <script src="./lib/layui/layui.js" charset="utf-8"></script>
-        <script type="text/javascript" src="./js/xadmin.js"></script>
-        <script type="text/javascript" src="./js/jquery.min.js"></script>
-        <!--[if lt IE 9]>
+
+<head>
+    <meta charset="UTF-8">
+    <title>消费统计</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+        content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <script src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <script type="text/javascript" src="./js/jquery.min.js"></script>
+    <!--[if lt IE 9]>
           <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
           <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
-        <style type="text/css">
-            img{
-                width: auto;
-                height: auto;
-                max-width: 100%;
-                max-height: 100%;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="layui-fluid">
-            <div class="layui-row layui-col-space15">
+    <style type="text/css">
+        img {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+</head>
 
-                <div class="layui-col-sm12 layui-col-md6">
-                    <div class="layui-card">
-                        <div class="layui-card-header">最近一周商品销量TOP3</div>
-                        <div class="layui-card-body" style="min-height: 280px;">
-                            <div id="main1" class="layui-col-sm12" style="height: 300px;"></div>
-                        </div>
-                    </div>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
 
-                    <div class="layui-card">
-                        <div class="layui-card-header">最近一周商品销量占比</div>
-                        <div class="layui-card-body" style="min-height: 280px;">
-                            <div id="main3" class="layui-col-sm12" style="height: 300px;"></div>
-
-                        </div>
+            <div class="layui-col-sm12 layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">最近一周商品销量TOP3</div>
+                    <div class="layui-card-body" style="min-height: 280px;">
+                        <div id="main1" class="layui-col-sm12" style="height: 300px;"></div>
                     </div>
                 </div>
-                <div class="layui-col-sm12 layui-col-md6">
-                    <div class="layui-card">
-                        <div class="layui-card-header">今日销量最佳
-                            <span class="layui-badge-dot"></span>
-                        </div>
-                        <div class="layui-card-body" style="min-height: 560px;">
-                            <div class="layui-col-sm12" style="height: 600px;">
-                                <!-- <div class="layui-carousel" id="best">
+
+                <div class="layui-card">
+                    <div class="layui-card-header">最近一周商品销量占比</div>
+                    <div class="layui-card-body" style="min-height: 280px;">
+                        <div id="main3" class="layui-col-sm12" style="height: 300px;"></div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm12 layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">今日销量最佳
+                        <span class="layui-badge-dot"></span>
+                    </div>
+                    <div class="layui-card-body" style="min-height: 560px;">
+                        <div class="layui-col-sm12" style="height: 600px;">
+                            <!-- <div class="layui-carousel" id="best">
                                     <div carousel-item>
                                       <div><img src="images/cola.jpg"></div>
                                       <div><img src="images/chips.jpg"></div>
                                       <div><img src="images/beer.jpg"></div>
                                     </div>
                                   </div> -->
-                                  <div id="show_day"></div>
-                            </div>
+                            <div id="show_day"></div>
                         </div>
                     </div>
                 </div>
-                <!-- <div class="layui-col-sm12 layui-col-md6">
+            </div>
+            <!-- <div class="layui-col-sm12 layui-col-md6">
                     <div class="layui-card">
                         <div class="layui-card-header">最新一周PV/UV量</div>
                         <div class="layui-card-body" style="min-height: 280px;">
@@ -72,7 +75,7 @@
                         </div>
                     </div>
                 </div> -->
-                <!-- <div class="layui-col-sm12 layui-col-md6">
+            <!-- <div class="layui-col-sm12 layui-col-md6">
                     <div class="layui-card">
                         <div class="layui-card-header">最近一周商品销量占比</div>
                         <div class="layui-card-body" style="min-height: 280px;">
@@ -81,7 +84,7 @@
                         </div>
                     </div>
                 </div> -->
-                <!-- <div class="layui-col-sm12 layui-col-md6">
+            <!-- <div class="layui-col-sm12 layui-col-md6">
                     <div class="layui-card">
                         <div class="layui-card-header">硬盘使用量</div>
                         <div class="layui-card-body" style="min-height: 280px;">
@@ -90,16 +93,20 @@
                         </div>
                     </div>
                 </div> -->
-            </div>
         </div>
-    
-        <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
-        <script type="text/javascript">
-        $.get('/api/consumption/day',function (result){
+    </div>
+
+    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $.ajaxSetup({ crossDomain: true, xhrFields: { withCredentials: true } });
+        });
+
+        $.get('/api/consumption/day', function (result) {
             var day = $('#show_day');
             var data = result.data;
             console.log(data);
-            var img = '<img alt="Best" src="'+data[0].path+'"/>';
+            var img = '<img alt="Best" src="' + data[0].path + '"/>';
             day.html(img);
         });
 
@@ -120,7 +127,7 @@
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
-                type: 'shadow'
+                    type: 'shadow'
                 }
             }
         };
@@ -130,17 +137,17 @@
 
         myChart1.showLoading();
 
-        $.get('/api/consumption/week',function (result) {
+        $.get('/api/consumption/week', function (result) {
             var names = [];  //类别数组
             var values = [];
-            if(result){
+            if (result) {
                 $.each(result.data, function (index, item) {
-                            names.push(item.commodityName); //逐个取出类别并填入类别数组
-                            values.push(item.salesVolume);
-                    });
-                    myChart1.hideLoading();
-                    myChart1.setOption({
-                        xAxis: {
+                    names.push(item.commodityName); //逐个取出类别并填入类别数组
+                    values.push(item.salesVolume);
+                });
+                myChart1.hideLoading();
+                myChart1.setOption({
+                    xAxis: {
                         type: 'category',
                         data: names,
                         axisTick: {
@@ -151,14 +158,14 @@
                         type: 'value'
                     },
                     series: [{
-                        name:'销量',
+                        name: '销量',
                         data: values,
                         type: 'bar',
                         barWidth: '50%'
-                        }]
-                    });
-                }
-        }).fail(function (errorMsg) {
+                    }]
+                });
+            }
+        },'json').fail(function (errorMsg) {
             myChart1.hideLoading();
         });
 
@@ -167,7 +174,7 @@
 
         // 指定图表的配置项和数据
         var option = {
-            tooltip : {
+            tooltip: {
                 trigger: 'item',
                 formatter: "{a} <br/>{b} : {c} ({d}%)"
             }
@@ -178,29 +185,29 @@
 
         myChart2.showLoading();
 
-        $.get('/api/consumption/month',function (result) {
+        $.get('/api/consumption/month', function (result) {
             var names = [];  //类别数组
             var labels = [];
-            if(result){
+            if (result) {
                 $.each(result.data, function (index, item) {
-                            names.push(item.commodityName); //逐个取出类别并填入类别数组
-                            labels.push({
-                                name: item.commodityName,
-                                value: item.salesVolume
-                            });
+                    names.push(item.commodityName); //逐个取出类别并填入类别数组
+                    labels.push({
+                        name: item.commodityName,
+                        value: item.salesVolume
                     });
-                    myChart2.hideLoading();
-                    myChart2.setOption({
-                        legend: {
+                });
+                myChart2.hideLoading();
+                myChart2.setOption({
+                    legend: {
                         orient: 'vertical',
                         left: 'left',
                         data: names
                     },
-                    series : [
+                    series: [
                         {
                             name: '销量占比',
                             type: 'pie',
-                            radius : '55%',
+                            radius: '55%',
                             center: ['50%', '60%'],
                             roseType: 'radius',
                             data: labels,
@@ -213,9 +220,9 @@
                             }
                         }
                     ]
-                    });
+                });
             }
-        }).fail(function (errorMsg) {
+        },'json').fail(function (errorMsg) {
             myChart2.hideLoading();
         });
 
@@ -231,5 +238,6 @@
         // });
         // });
     </script>
-    </body>
+</body>
+
 </html>

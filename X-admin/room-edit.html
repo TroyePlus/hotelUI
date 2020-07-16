@@ -81,6 +81,10 @@
     </div>
 </div>
 <script>
+    $(function () {
+        $.ajaxSetup({crossDomain: true, xhrFields: {withCredentials: true}});
+    });
+
     var demo1 = xmSelect.render({
         el: '#select',
         name: 'typeId',
@@ -90,7 +94,7 @@
         theme: {
             color: '#1cbbb4',
         },
-        tips: '选择楼层',
+        tips: '选择类型',
         prop: {
             name: 'typeName',
             value: 'typeId'
@@ -103,7 +107,7 @@
         demo1.update({
             data: result.data
         });
-    });
+    },'json');
 
     function init(data) {
         layui.use(['form', 'layer'],
@@ -124,7 +128,7 @@
                 form.render('radio')
 
                 $('#roomId').val(data.roomId);
-                $('#roomId').readyOnly=true;
+                document.getElementById("roomId").readOnly=true;
 
                 //监听提交
                 form.on('submit(save)',

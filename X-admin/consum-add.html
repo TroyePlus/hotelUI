@@ -86,6 +86,10 @@
         </div>
     </div>
     <script>
+        $(function () {
+            $.ajaxSetup({ crossDomain: true, xhrFields: { withCredentials: true } });
+        });
+
         layui.use('laydate', function () {
             var laydate = layui.laydate;
 
@@ -114,9 +118,9 @@
 
         $.get('/api/commodities', function (result) {
             demo1.update({
-            data : result.data
-        });
-        });
+                data: result.data
+            });
+        },'json');
 
         function init() {
             layui.use(['form', 'layer'],

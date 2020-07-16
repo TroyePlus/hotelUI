@@ -92,6 +92,9 @@
   //     elem: '#date' //指定元素
   //   });
   // });
+  // $(function () {
+  //       $.ajaxSetup({crossDomain: true, xhrFields: {withCredentials: true}});
+  //   });
 
   layui.use(['laydate','table', 'form'], function () {
     var laydate = layui.laydate;
@@ -101,6 +104,7 @@
     });
 
     $ = layui.jquery;
+    $.ajaxSetup({crossDomain: true, xhrFields: {withCredentials: true}});
     var table = layui.table,
       form = layui.form;
 
@@ -112,8 +116,8 @@
       , id: 'com_table'
       // , width: 900
       // , height : 700
-      , limits: [5, 10, 20]  //每页条数的选择项
-      , limit: 5 //每页默认显示的数量
+      , limits: [10, 20]  //每页条数的选择项
+      , limit: 10 //每页默认显示的数量
       , toolbar: true   //显示工具栏
       , cols: [
         [

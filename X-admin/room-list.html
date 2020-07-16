@@ -93,6 +93,10 @@
 </div>
 </body>
 <script>
+  //  $(function () {
+  //       $.ajaxSetup({crossDomain: true, xhrFields: {withCredentials: true}});
+  //   });
+
   var demo1 = xmSelect.render({
     el: '#select_1',
     name: 'floor',
@@ -110,7 +114,8 @@
   });
 
   layui.use(['table','form'], function () {
-    // $ = layui.jquery;
+    $ = layui.jquery;
+    $.ajaxSetup({crossDomain: true, xhrFields: {withCredentials: true}});
     var table = layui.table,
             form = layui.form;
     table.render({
@@ -121,8 +126,8 @@
       , id: 'room_table'
       // , width: 900
       // , height : 700
-      , limits: [5, 10, 20]  //每页条数的选择项
-      , limit: 5 //每页默认显示的数量
+      , limits: [10, 20]  //每页条数的选择项
+      , limit: 10 //每页默认显示的数量
       , toolbar: true
       // , toolbar: '#custom_toolbar'
       , cols: [
